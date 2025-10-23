@@ -1,10 +1,14 @@
 package ui;
 
+import graph.MapGraph;
+import input.InputData;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 
-public final class GeneralComboBox extends JComboBox<String> {
+public class GeneralComboBox extends JComboBox<String> {
+
     public GeneralComboBox(){
         super();
 

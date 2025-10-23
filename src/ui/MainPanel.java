@@ -10,6 +10,7 @@ import org.graphstream.ui.swing_viewer.SwingViewer;
 import org.graphstream.ui.swing_viewer.ViewPanel;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
+import org.graphstream.ui.view.util.MouseManager;
 import util.Constants;
 
 import javax.swing.*;
@@ -37,6 +38,7 @@ public final class MainPanel extends JPanel {
         edgeMap = new HashMap<>();
 
         graph.setNodes(InputData.getInstance().getCountryMap().getCityNames(), nodeMap);
+        graph.connectAdjacent("price");
 
         SwingViewer graphViewer = new SwingViewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
         graphViewer.disableAutoLayout();

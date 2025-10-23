@@ -21,7 +21,7 @@ public final class InputData {
         this.departureList = departureList;
 
         mapGraph = new MapGraph("MainGraph");
-    }
+}
 
     public static void setInputData(CountryMap countryMap, List<Station> stationList, List<Departure> departureList){
         globalInputData = new InputData(countryMap, stationList, departureList);

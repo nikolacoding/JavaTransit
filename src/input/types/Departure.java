@@ -24,6 +24,10 @@ public final class Departure {
         return type + " " + from + " " + to + " " + departureTime + " " + duration + " " + price + " " + minTransferTime;
     }
 
+    public String getType(){
+        return this.type;
+    }
+
     public String getFrom() {
         return from;
     }

@@ -1,13 +1,19 @@
 package graph;
 
+import input.InputData;
+import input.types.Departure;
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.graph.implementations.MultiGraph;
+import pathfinding.DepartureUtility;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public final class MapGraph extends SingleGraph {
+public final class MapGraph extends MultiGraph {
+
     public MapGraph(String name){
         super(name);
     }
@@ -19,22 +25,70 @@ public final class MapGraph extends SingleGraph {
         });
 
         final Random random = new Random();
-        double minDistX = 0d;
-        double minDistY = 0d;
+        double minDistX = 5000d;
+        double minDistY = 5000d;
         for (Node node : this){
-            double x = random.nextDouble() * 100 + minDistX;
-            minDistX += random.nextDouble() * 100;
+            double x = random.nextDouble() * 5000 + minDistX;
+            minDistX += random.nextDouble() * 75;
 
-            double y = random.nextDouble() * 100 + minDistY;
+            double y = random.nextDouble() * 5000 + minDistY;
             minDistY += random.nextDouble() * 100 * (random.nextBoolean() ? 1 : -1);
             node.setAttribute("xyz", x, y, 0);
         }
     }
 
+    public void connectAdjacent(String weightCriteria){
+        List<Departure> departures = InputData.getInstance().getDepartureList();
+
+        departures.forEach(departure -> {
+            final String from = DepartureUtility.stationToCity(departure.getFrom());
+            final String to = DepartureUtility.stationToCity(departure.getTo());
+            final int weight;
+            int subId = -1;
+            String id;
+
+            do {
+                subId++;
+                id = from + " " + to + " " + subId;
+            } while (this.getEdge(id) != null);
+
+            Edge e = this.addEdge(id, from, to, true);
+
+            switch (weightCriteria){
+                case "duration" -> weight = departure.getDuration();
+                case "price"    -> weight = departure.getPrice();
+                default         -> weight = departure.getDuration();
+            }
+
+            e.setAttribute("weight", weight);
+        });
+    }
+
+    public void clearEdges(){
+        var edges = this.edges().toList();
+        edges.forEach(this::removeEdge);
+    }
+
     @Override
     public Node addNode(String s){
         Node res = super.addNode(s);
-        res.setAttribute("ui.style", "fill-color: black; size: 15px;");
+        res.setAttribute("ui.style", "fill-color: black; size: 10px;");
         return res;
+    }
+
+    public void setSelected(String node, boolean state, String type){
+        final Node n = this.getNode(node);
+
+        if (n != null) {
+            String selectedStyle;
+            switch (type) {
+                case "A" -> selectedStyle = "fill-color: red; size: 20px;";     // selected (polazak)
+                case "B" -> selectedStyle = "fill-color: blue; size: 20px;";    // selected (destinacija)
+                case "C" -> selectedStyle = "fill-color: yellow; size: 20px;";  // selected (oba/debug)
+                default  -> selectedStyle = "fill-color: black; size: 10px;";   // deselected
+            }
+
+            this.getNode(node).setAttribute("ui.style", selectedStyle);
+        }
     }
 }

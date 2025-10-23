@@ -6,7 +6,7 @@ import java.util.*;
 
 public final class TransportDataGenerator {
     private static final int DEFAULT_DIMENSION = 10;
-    private static final int DEPARTURES_PER_STATION = 5;
+    private static final int DEPARTURES_PER_STATION = 2;
     private static final Random random = new Random();
 
     private final int n;
@@ -25,9 +25,9 @@ public final class TransportDataGenerator {
     }
 
     public static void main(String[] args) {
-        TransportDataGenerator generator = new TransportDataGenerator(10, 5);
+        TransportDataGenerator generator = new TransportDataGenerator(3, 3);
         TransportData data = generator.generateData();
-        generator.saveToJson(data, "transport_data.json");
+        generator.saveToJson(data, "transport_dataX.json");
         System.out.println("Podaci su generisani i sacuvani kao transport_data.json");
     }
 
