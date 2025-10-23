@@ -1,6 +1,10 @@
 package ui;
 
+import graph.MapGraph;
+import input.InputData;
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.swing_viewer.SwingViewer;
 import org.graphstream.ui.swing_viewer.ViewPanel;
@@ -10,9 +14,13 @@ import util.Constants;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class MainPanel extends JPanel {
-    private final Graph graph;
+    private final MapGraph graph;
+    private final Map<String, Node> nodeMap;
+    private final Map<String, Edge> edgeMap;
 
     public MainPanel(){
         super(new BorderLayout());
@@ -24,17 +32,14 @@ public final class MainPanel extends JPanel {
         labelPanel.setBackground(Color.white);
         this.add(labelPanel, BorderLayout.NORTH);
 
-        graph = new SingleGraph("MainGraph");
-        graph.addNode("A");
-        graph.addNode("B");
-        graph.addNode("C");
-        graph.addNode("D");
-        graph.addEdge("AB", "A", "B");
-        graph.addEdge("BC", "B", "C");
-        graph.addEdge("CD", "C", "D");
+        graph = InputData.getInstance().getMapGraph();
+        nodeMap = new HashMap<>();
+        edgeMap = new HashMap<>();
+
+        graph.setNodes(InputData.getInstance().getCountryMap().getCityNames(), nodeMap);
 
         SwingViewer graphViewer = new SwingViewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
-        graphViewer.enableAutoLayout();
+        graphViewer.disableAutoLayout();
 
         View view = graphViewer.addDefaultView(false);
         ViewPanel viewPanel = (ViewPanel)view;
