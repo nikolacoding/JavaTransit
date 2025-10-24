@@ -78,17 +78,20 @@ public final class MapGraph extends MultiGraph {
 
     public void setSelected(String node, boolean state, String type){
         final Node n = this.getNode(node);
+        String style;
 
         if (n != null) {
-            String selectedStyle;
-            switch (type) {
-                case "A" -> selectedStyle = "fill-color: red; size: 20px;";     // selected (polazak)
-                case "B" -> selectedStyle = "fill-color: blue; size: 20px;";    // selected (destinacija)
-                case "C" -> selectedStyle = "fill-color: yellow; size: 20px;";  // selected (oba/debug)
-                default  -> selectedStyle = "fill-color: black; size: 10px;";   // deselected
+            if (state) {
+                switch (type) {
+                    case "A" -> style = "fill-color: red; size: 10px;";     // selected (polazak)
+                    case "B" -> style = "fill-color: blue; size: 10px;";    // selected (destinacija)
+                    case "C" -> style = "fill-color: yellow; size: 10px;";  // selected (oba/debug)
+                    default -> style = "fill-color: black; size: 10px;";   // deselected
+                }
             }
+            else style = "fill-color: black; size: 10px;";
 
-            this.getNode(node).setAttribute("ui.style", selectedStyle);
+            this.getNode(node).setAttribute("ui.style", style);
         }
     }
 }

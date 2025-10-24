@@ -1,7 +1,4 @@
-package ui;
-
-import graph.MapGraph;
-import input.InputData;
+package ui.primary;
 
 import javax.swing.*;
 import java.awt.*;

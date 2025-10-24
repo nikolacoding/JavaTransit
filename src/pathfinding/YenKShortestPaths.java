@@ -1,8 +1,6 @@
 package pathfinding;
 
-import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
 
 import java.util.*;
 
@@ -20,17 +18,25 @@ public class YenKShortestPaths {
         }
     }
 
-    static class PathWithCost implements Comparable<PathWithCost> {
-        List<String> nodes;
-        double totalCost;
+    public static class PathObject implements Comparable<PathObject> {
+        private final List<String> nodes;
+        private final double totalCost;
 
-        PathWithCost(List<String> nodes, double totalCost) {
+        PathObject(List<String> nodes, double totalCost) {
             this.nodes = new ArrayList<>(nodes);
             this.totalCost = totalCost;
         }
 
+        public List<String> getNodes(){
+            return nodes;
+        }
+
+        public double getTotalCost(){
+            return this.totalCost;
+        }
+
         @Override
-        public int compareTo(PathWithCost other) {
+        public int compareTo(PathObject other) {
             return Double.compare(this.totalCost, other.totalCost);
         }
 
@@ -76,7 +82,7 @@ public class YenKShortestPaths {
     }
 
 
-    private PathWithCost dijkstra(String start, Set<String> bannedNodes, Set<String> bannedEdges) {
+    private PathObject dijkstra(String start, Set<String> bannedNodes, Set<String> bannedEdges) {
         Map<String, Double> dist = new HashMap<>();
         Map<String, String> prev = new HashMap<>();
         PriorityQueue<Map.Entry<String, Double>> pq = new PriorityQueue<>(Comparator.comparingDouble(Map.Entry::getValue));
@@ -114,19 +120,19 @@ public class YenKShortestPaths {
         for (String at = target; at != null; at = prev.get(at)) {
             path.addFirst(at);
         }
-        return new PathWithCost(path, dist.get(target));
+        return new PathObject(path, dist.get(target));
     }
 
-    public List<PathWithCost> yen(int K) {
-        List<PathWithCost> kPaths = new ArrayList<>();
-        PriorityQueue<PathWithCost> candidates = new PriorityQueue<>();
-        PathWithCost shortest = dijkstra(source, null, null);
+    public List<PathObject> yen(int K) {
+        List<PathObject> kPaths = new ArrayList<>();
+        PriorityQueue<PathObject> candidates = new PriorityQueue<>();
+        PathObject shortest = dijkstra(source, null, null);
 
         if (shortest == null) return Collections.emptyList();
         kPaths.add(shortest);
 
         for (int k = 1; k < K; k++) {
-            PathWithCost lastPath = kPaths.get(k - 1);
+            PathObject lastPath = kPaths.get(k - 1);
             int pathSize = lastPath.nodes.size();
 
             for (int i = 0; i < pathSize - 1; i++) {
@@ -137,7 +143,7 @@ public class YenKShortestPaths {
                 Set<String> bannedEdges = new HashSet<>();
 
                 // Ban edges which cause the same root path on previous paths
-                for (PathWithCost p : kPaths) {
+                for (PathObject p : kPaths) {
                     if (p.nodes.size() > i && p.nodes.subList(0, i + 1).equals(rootPath)) {
                         String from = p.nodes.get(i);
                         String to = p.nodes.get(i + 1);
@@ -153,7 +159,7 @@ public class YenKShortestPaths {
                     if (!node.equals(spurNode)) bannedNodes.add(node);
                 }
 
-                PathWithCost spurPath = dijkstra(spurNode, bannedNodes, bannedEdges);
+                PathObject spurPath = dijkstra(spurNode, bannedNodes, bannedEdges);
                 if (spurPath != null) {
                     List<String> totalPath = new ArrayList<>(rootPath);
                     totalPath.addAll(spurPath.nodes.subList(1, spurPath.nodes.size()));
@@ -162,16 +168,16 @@ public class YenKShortestPaths {
                     for (int j = 0; j < totalPath.size() - 1; j++) {
                         totalCost += findEdgeCost(totalPath.get(j), totalPath.get(j + 1));
                     }
-                    candidates.offer(new PathWithCost(totalPath, totalCost));
+                    candidates.offer(new PathObject(totalPath, totalCost));
                 }
             }
 
             if (candidates.isEmpty()) break;
-            PathWithCost nextPath = candidates.poll();
+            PathObject nextPath = candidates.poll();
 
             // Avoid duplicates
             boolean duplicate = false;
-            for (PathWithCost p : kPaths) {
+            for (PathObject p : kPaths) {
                 if (p.nodes.equals(nextPath.nodes)) {
                     duplicate = true;
                     break;

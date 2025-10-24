@@ -1,4 +1,4 @@
-package ui;
+package ui.primary;
 
 import graph.MapGraph;
 import input.InputData;
@@ -9,7 +9,7 @@ public final class CityComboBox extends GeneralComboBox {
 
     private final MapGraph graph;
 
-    public CityComboBox(String selectedStyle, String deselectedStyle, String selectionType) {
+    public CityComboBox(String selectionType) {
         super();
         this.graph = InputData.getInstance().getMapGraph();
 
@@ -22,7 +22,7 @@ public final class CityComboBox extends GeneralComboBox {
             } else if (ie.getStateChange() == ItemEvent.DESELECTED) {
                 String selectedItem = (String) ie.getItem();
                 if (!selectedItem.isEmpty()) {
-                    this.graph.getNode(selectedItem).setAttribute("ui.style", deselectedStyle);
+                    this.graph.setSelected(selectedItem, false, selectionType);
                 }
             }
         });

@@ -1,34 +1,26 @@
-package ui;
+package ui.primary;
 
 import graph.MapGraph;
 import input.InputData;
-import input.TransportDataParser;
-import org.graphstream.graph.Graph;
 import pathfinding.YenKShortestPaths;
+import ui.secondary.PathsWindow;
 import util.Constants;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import java.util.ArrayList;
 
-public final class BottomPanel extends JPanel {
-    private final CityComboBox startComboBox = new CityComboBox("fill-color: red; size: 20px;", "fill-color: black; size: 10px;", "A");
-    private final CityComboBox destinationComboBox = new CityComboBox("fill-color: blue; size: 20px;", "fill-color: black; size: 10px;", "B");
+public final class OptionsPanel extends TitledPanel {
+    private final CityComboBox startComboBox = new CityComboBox("A");
+    private final CityComboBox destinationComboBox = new CityComboBox("B");
     private final GeneralComboBox optimizationCriteriaComboBox = new GeneralComboBox();
     private final MapGraph graph;
 
-    public BottomPanel(){
-        super(new BorderLayout());
+    public OptionsPanel(){
+        super("Opcije", Color.darkGray, Color.white);
+
         this.graph = InputData.getInstance().getMapGraph();
-
-        this.setLayout(new BorderLayout());
-        this.setBackground(Color.DARK_GRAY);
-        this.setPreferredSize(new Dimension(Constants.WINDOW_WIDTH_MAX, Constants.BOTTOM_PANEL_HEIGHT));
-
-        final JPanel labelPanel = new JPanel();
-        labelPanel.add(new GeneralLabel("Opcije", Color.white, SwingConstants.CENTER));
-        labelPanel.setBackground(Color.darkGray);
-        this.add(labelPanel, BorderLayout.NORTH);
 
         final JPanel comboBoxPanel = new JPanel();
 
@@ -74,6 +66,8 @@ public final class BottomPanel extends JPanel {
             var y = new YenKShortestPaths(this.graph, (String)startComboBox.getSelectedItem(), (String)destinationComboBox.getSelectedItem());
             var res = y.yen(5);
             System.out.println(res.toString());
+
+            new PathsWindow((ArrayList<YenKShortestPaths.PathObject>)res);
         });
 
         findButton.setFocusable(false);
