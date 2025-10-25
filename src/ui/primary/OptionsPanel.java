@@ -3,14 +3,13 @@ package ui.primary;
 import graph.MapGraph;
 import input.InputData;
 import input.StateManager;
+import pathfinding.PathReconstructor;
 import pathfinding.YenKShortestPaths;
-import ui.secondary.PathsWindow;
 import util.Constants;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.util.ArrayList;
 
 public final class OptionsPanel extends TitledPanel {
     private final CityComboBox startComboBox = new CityComboBox("A");
@@ -67,8 +66,14 @@ public final class OptionsPanel extends TitledPanel {
 
         findButton.addActionListener(ae -> {
             var yenGenerator = new YenKShortestPaths(this.graph, (String)startComboBox.getSelectedItem(), (String)destinationComboBox.getSelectedItem());
-            StateManager.getInstance().setCurrentYenResult(yenGenerator.yen(5));
-            StateManager.getInstance().getSearchResultPanel().setResult();
+
+            final StateManager smInstance = StateManager.getInstance();
+            smInstance.setCurrentYenResult(yenGenerator.yen(5));
+            smInstance.getSearchResultPanel().setResult();
+
+            var pathNodeIds = smInstance.getCurrentYenResult().getFirst().getNodes();
+
+            PathReconstructor.reconstructPath(graph, pathNodeIds, "yellow");
         });
 
         findButton.setFocusable(false);

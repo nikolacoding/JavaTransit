@@ -6,6 +6,7 @@ import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
 import pathfinding.DepartureUtility;
+import util.Constants;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,13 +17,13 @@ public final class MapGraph extends MultiGraph {
 
     public MapGraph(String name){
         super(name);
-        this.setAttribute("ui.stylesheet", "graph { fill-color: rgb(33, 32, 28); }");
+        this.setAttribute("ui.stylesheet", "graph { fill-color: " + Constants.GRAPH_BACKGROUND_COLOR_CSS + "; }");
     }
 
     public void setNodes(String[] cityNames, Map<String, Node> map){
         Arrays.stream(cityNames).forEach(cityName -> {
             Node newNode = this.addNode(cityName);
-            newNode.setAttribute("ui.style", "fill-color: gray;");
+            newNode.setAttribute("ui.style", "fill-color: " + Constants.DEFAULT_NODE_COLOR_CSS + ";");
             map.put(cityName, newNode);
         });
 
@@ -55,7 +56,7 @@ public final class MapGraph extends MultiGraph {
             } while (this.getEdge(id) != null);
 
             Edge e = this.addEdge(id, from, to, true);
-            e.setAttribute("ui.style", "fill-color: gray; ");
+            e.setAttribute("ui.style", "fill-color: " + Constants.DEFAULT_EDGE_COLOR_CSS + ";");
 
             switch (weightCriteria){
                 case "duration" -> weight = departure.getDuration();
@@ -75,7 +76,7 @@ public final class MapGraph extends MultiGraph {
     @Override
     public Node addNode(String s){
         Node res = super.addNode(s);
-        res.setAttribute("ui.style", "fill-color: black; size: 10px;");
+        res.setAttribute("ui.style", "size: 10px; fill-color: " + Constants.DEFAULT_NODE_COLOR_CSS + ";");
         return res;
     }
 
@@ -89,10 +90,10 @@ public final class MapGraph extends MultiGraph {
                     case "A" -> style = "fill-color: red; size: 10px;";     // selected (polazak)
                     case "B" -> style = "fill-color: blue; size: 10px;";    // selected (destinacija)
                     case "C" -> style = "fill-color: yellow; size: 10px;";  // selected (oba/debug)
-                    default -> style = "fill-color: black; size: 10px;";   // deselected
+                    default -> style = "fill-color: " + Constants.DEFAULT_NODE_COLOR_CSS + ";";   // deselected
                 }
             }
-            else style = "fill-color: black; size: 10px;";
+            else style = "fill-color: " + Constants.DEFAULT_NODE_COLOR_CSS + ";";
 
             this.getNode(node).setAttribute("ui.style", style);
         }
