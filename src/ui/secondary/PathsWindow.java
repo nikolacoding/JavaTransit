@@ -68,8 +68,6 @@ public final class PathsWindow extends JFrame {
             }
         });
 
-
-
         this.pack();
         this.repaint();
         this.revalidate();

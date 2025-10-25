@@ -137,7 +137,6 @@ public class YenKShortestPaths {
                 Set<String> bannedNodes = new HashSet<>();
                 Set<String> bannedEdges = new HashSet<>();
 
-                // Ban edges which cause the same root path on previous paths
                 for (PathObject p : kPaths) {
                     if (p.nodes.size() > i && p.nodes.subList(0, i + 1).equals(rootPath)) {
                         String from = p.nodes.get(i);
@@ -149,7 +148,6 @@ public class YenKShortestPaths {
                     }
                 }
 
-                // Ban nodes in rootPath except spurNode to avoid cycles
                 for (String node : rootPath) {
                     if (!node.equals(spurNode)) bannedNodes.add(node);
                 }
@@ -181,7 +179,7 @@ public class YenKShortestPaths {
             if (!duplicate)
                 kPaths.add(nextPath);
             else
-                k--;  // try again if duplicate
+                k--;
         }
 
         return kPaths;

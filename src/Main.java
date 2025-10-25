@@ -1,5 +1,6 @@
 import input.InputData;
 import input.TransportDataParser;
+import pathfinding.DepartureUtility;
 import ui.primary.MainWindow;
 
 public class Main {

@@ -1,5 +1,9 @@
 package ui.secondary.table;
 
+import input.InputData;
+import input.types.Departure;
+import org.w3c.dom.Node;
+import pathfinding.DepartureUtility;
 import pathfinding.YenKShortestPaths;
 import util.Time;
 
@@ -35,9 +39,18 @@ public final class TableDataFormatter {
         List<String> nodes = pathObject.getNodes();
         StringBuilder res = new StringBuilder();
 
-        nodes.forEach(node -> res.append(node).append(" -> "));
+        for (int i = 0; i < nodes.size() - 1; i++){
+            final String current = nodes.get(i);
+            final String next = nodes.get(i + 1);
+            final List<Departure> departureList = InputData.getInstance().getDepartureList();
+
+            String nextNode = DepartureUtility.getQuickestDepartureBetweenTwoNodes(departureList, current, next).getFrom() + " -> ";
+
+            res.append(nextNode);
+        }
 
         res.delete(res.length() - 3, res.length());
+        res.append(" -> ").append(nodes.getLast());
 
         return res.toString();
     }
