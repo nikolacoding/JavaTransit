@@ -24,7 +24,7 @@ public final class TableDataFormatter {
             switch (lastCriteria){
                 case "Cijena"           -> res[i][2] = String.valueOf(rawValue);
                 case "Trajanje"         -> res[i][2] = Time.FormatMinutes(rawValue);
-                case "Broj presjedanja" -> res[i][2] = String.valueOf((int)rawValue);
+                case "Broj presjedanja" -> res[i][2] = String.valueOf((int)rawValue - 1);
             }
         }
 

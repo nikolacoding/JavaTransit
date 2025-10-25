@@ -50,7 +50,11 @@ public final class SearchResultPanel extends TitledPanel {
         YenKShortestPaths.PathObject topResult = smInstance.getCurrentYenResult().getFirst();
 
         if (topResult != null){
-            final String text = smInstance.getCriteriaTableName() + " najoptimalnijeg puta je " + topResult.getTotalCost() + ".";
+            int displayedValue = (int)topResult.getTotalCost();
+
+            if (smInstance.getCriteriaTableName().equals("Broj presjedanja")) displayedValue--;
+
+            final String text = smInstance.getCriteriaTableName() + " najoptimalnijeg puta je " + displayedValue + ".";
             topResultLabel.setText(text);
             StateManager.getInstance().getExtraButton().setVisible(true);
         }

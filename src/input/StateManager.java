@@ -16,7 +16,7 @@ public final class StateManager {
     private JButton extraButton;
 
     private String criteriaTableName = "Cijena";
-    private List<YenKShortestPaths. PathObject> currentYenResult;
+    private List<YenKShortestPaths.PathObject> currentYenResult;
 
     private StateManager(){
 
