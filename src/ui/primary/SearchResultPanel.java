@@ -6,8 +6,6 @@ import ui.secondary.PathsWindow;
 import util.Constants;
 
 import javax.swing.*;
-import javax.swing.plaf.nimbus.State;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
