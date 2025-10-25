@@ -19,6 +19,7 @@ public final class OptionsPanel extends TitledPanel {
 
     public OptionsPanel(){
         super("Opcije", Color.darkGray, Color.white);
+        final StateManager smInstance = StateManager.getInstance();
 
         this.graph = InputData.getInstance().getMapGraph();
 
@@ -49,17 +50,17 @@ public final class OptionsPanel extends TitledPanel {
                     case "Najnizoj cijeni" -> {
                         this.graph.clearEdges();
                         this.graph.connectAdjacent("price");
-                        StateManager.getInstance().setCriteriaTableName("Cijena");
+                        smInstance.setCriteriaTableName("Cijena");
                     }
                     case "Najkracem vremenu puta" -> {
                         this.graph.clearEdges();
                         this.graph.connectAdjacent("duration");
-                        StateManager.getInstance().setCriteriaTableName("Trajanje");
+                        smInstance.setCriteriaTableName("Trajanje");
                     }
                     case "Najmanjem broju presjedanja" -> {
                         this.graph.clearEdges();
                         this.graph.connectAdjacent("vehicle");
-                        StateManager.getInstance().setCriteriaTableName("Broj presjedanja");
+                        smInstance.setCriteriaTableName("Broj presjedanja");
                     }
                 }
             }
@@ -72,7 +73,6 @@ public final class OptionsPanel extends TitledPanel {
         findButton.addActionListener(ae -> {
             var yenGenerator = new YenKShortestPaths(this.graph, (String)startComboBox.getSelectedItem(), (String)destinationComboBox.getSelectedItem());
 
-            final StateManager smInstance = StateManager.getInstance();
             smInstance.setCurrentYenResult(yenGenerator.yen(5));
             smInstance.getSearchResultPanel().setResult();
 
@@ -85,5 +85,10 @@ public final class OptionsPanel extends TitledPanel {
 
         findButton.setFocusable(false);
         comboBoxPanel.add(findButton);
+
+        smInstance.addPrimaryInteractiveComponent(this.startComboBox);
+        smInstance.addPrimaryInteractiveComponent(this.destinationComboBox);
+        smInstance.addPrimaryInteractiveComponent(this.optimizationCriteriaComboBox);
+        smInstance.addPrimaryInteractiveComponent(findButton);
     }
 }

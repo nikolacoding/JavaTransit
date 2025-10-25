@@ -19,6 +19,7 @@ public final class SearchResultPanel extends TitledPanel {
     public SearchResultPanel(){
         super("Rezultat", bgColor, Color.black);
         topResultLabel.setFont(new Font("Roboto", Font.BOLD, 20));
+        StateManager.getInstance().setTopResultLabel(this.topResultLabel);
 
         final JPanel rightPanel = new JPanel();
         final JPanel leftPanel = new JPanel();
@@ -42,6 +43,8 @@ public final class SearchResultPanel extends TitledPanel {
 
         this.add(leftPanel, BorderLayout.CENTER);
         this.add(rightPanel, BorderLayout.EAST);
+
+        StateManager.getInstance().addPrimaryInteractiveComponent(extraButton);
     }
 
     public void setResult(){
