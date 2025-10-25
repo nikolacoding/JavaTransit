@@ -1,12 +1,15 @@
 package ui.secondary.table;
 
 import pathfinding.YenKShortestPaths;
+import util.Time;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class TableDataFormatter {
+    private static String lastCriteria = null;
     public static String[] GetTableCols(String criteria){
+        lastCriteria = criteria;
         return new String[]{"#", "Putanja", criteria};
     }
 
@@ -16,7 +19,12 @@ public final class TableDataFormatter {
         for (int i = 0; i < paths.size(); i++) {
             res[i][0] = String.valueOf(i + 1);
             res[i][1] = getFormattedPath(paths.get(i));
-            res[i][2] = String.valueOf(paths.get(i).getTotalCost());
+
+            final double rawValue = paths.get(i).getTotalCost();
+            if (lastCriteria.equals("Cijena"))
+                res[i][2] = String.valueOf(rawValue);
+            else
+                res[i][2] = Time.FormatMinutes(rawValue);
         }
 
         return res;

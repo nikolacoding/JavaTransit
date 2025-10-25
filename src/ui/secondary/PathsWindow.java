@@ -20,8 +20,8 @@ public final class PathsWindow extends JFrame {
 
         final JPanel mainPanel = new JPanel();
 
-        final String[][] tableData = TableDataFormatter.GetTableData(paths);
         final String[] tableCols = TableDataFormatter.GetTableCols(StateManager.getInstance().getCriteriaTableName());
+        final String[][] tableData = TableDataFormatter.GetTableData(paths);
         PathTable table = new PathTable(tableData, tableCols);
         PathTableScrollPane tableScrollPane = new PathTableScrollPane(table);
 
