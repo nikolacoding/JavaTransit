@@ -4,6 +4,7 @@ import input.StateManager;
 import pathfinding.YenKShortestPaths;
 import ui.secondary.PathsWindow;
 import util.Constants;
+import util.Time;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,16 +46,43 @@ public final class SearchResultPanel extends TitledPanel {
 
     public void setResult(){
         final StateManager smInstance = StateManager.getInstance();
-        YenKShortestPaths.PathObject topResult = smInstance.getCurrentYenResult().getFirst();
+        YenKShortestPaths.PathObject topResult = null;
+        boolean buttonState;
+        String text = "";
 
-        if (topResult != null){
-            int displayedValue = (int)topResult.getTotalCost();
+        if (!smInstance.getCurrentYenResult().isEmpty()) {
+            if (smInstance.getCurrentYenResult().size() == 1 && (int)smInstance.getCurrentYenResult().getFirst().getTotalCost() == 0){
+                text = "Izabrana su dva ista grada.";
+                buttonState = false;
+            }
+            else {
+                topResult = smInstance.getCurrentYenResult().getFirst();
+                final String tableName = smInstance.getCriteriaTableName();
+                int rawValue = (int) topResult.getTotalCost();
+                String displayedValue = "";
 
-            if (smInstance.getCriteriaTableName().equals("Broj presjedanja")) displayedValue--;
+                if (tableName.equals("Broj presjedanja")) {
+                    rawValue--;
+                    if (rawValue <= 0)
+                        rawValue = 0;
 
-            final String text = smInstance.getCriteriaTableName() + " najoptimalnijeg puta je " + displayedValue + ".";
-            topResultLabel.setText(text);
-            StateManager.getInstance().getExtraButton().setVisible(true);
+                    displayedValue = String.valueOf(rawValue);
+                } else if (tableName.equals("Trajanje")) {
+                    displayedValue = Time.FormatMinutes(rawValue);
+                } else if (tableName.equals("Cijena")) {
+                    displayedValue = rawValue + "KM";
+                }
+
+                text = tableName + " najoptimalnijeg puta je " + displayedValue + ".";
+                buttonState = true;
+            }
         }
+        else {
+            text = "Ne postoji put izmedju dva zadata cvora.";
+            buttonState = false;
+        }
+
+        topResultLabel.setText(text);
+        StateManager.getInstance().getExtraButton().setVisible(buttonState);
     }
 }

@@ -76,9 +76,11 @@ public final class OptionsPanel extends TitledPanel {
             smInstance.setCurrentYenResult(yenGenerator.yen(5));
             smInstance.getSearchResultPanel().setResult();
 
-            var pathNodeIds = smInstance.getCurrentYenResult().getFirst().getNodes();
-
-            PathReconstructor.reconstructPath(graph, pathNodeIds, "yellow");
+            var res = smInstance.getCurrentYenResult();
+            if (!res.isEmpty()) {
+                var pathNodeIds = res.getFirst().getNodes();
+                PathReconstructor.reconstructPath(graph, pathNodeIds, "yellow");
+            }
         });
 
         findButton.setFocusable(false);

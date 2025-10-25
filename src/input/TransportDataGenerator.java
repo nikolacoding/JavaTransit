@@ -25,10 +25,12 @@ public final class TransportDataGenerator {
     }
 
     public static void main(String[] args) {
-        TransportDataGenerator generator = new TransportDataGenerator(7, 8);
+        TransportDataGenerator generator = new TransportDataGenerator(50, 50);
         TransportData data = generator.generateData();
-        generator.saveToJson(data, "transport_data.json");
-        System.out.println("Podaci su generisani i sacuvani kao transport_dataA.json");
+        final String filename = "transport_data50MP.json";
+
+        generator.saveToJson(data, filename);
+        System.out.println("Podaci su generisani i sacuvani kao " + filename + ".");
     }
 
     // struktura podataka koja sadrzi sve trazene ulazne podatke

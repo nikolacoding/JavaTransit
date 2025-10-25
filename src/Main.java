@@ -4,7 +4,7 @@ import ui.primary.MainWindow;
 
 public class Main {
     public static void main(String[] args) {
-        if (TransportDataParser.SetJsonPath("transport_data.json")) {
+        if (TransportDataParser.SetJsonPath("transport_dataMP.json")) {
             InputData.setInputData(TransportDataParser.GenerateCountryMap(), TransportDataParser.GenerateStations(), TransportDataParser.GenerateDepartures());
             new MainWindow();
         }

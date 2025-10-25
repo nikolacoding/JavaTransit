@@ -1,17 +1,15 @@
 package util;
 
 public final class Time {
-    public static String FormatMinutes(int minutes){
-        String mins = String.valueOf(minutes % 60);
-        String hrs = String.valueOf((minutes / 60));
-
-        return hrs + "h " + mins + " min";
-    }
-
     public static String FormatMinutes(double minutes){
-        String mins = String.valueOf((int)minutes % 60);
-        String hrs = String.valueOf(((int)minutes / 60));
+        int mins = (int)minutes % 60;
+        int hrs = ((int)minutes / 60) % 24;
+        int days = (int)minutes / 60 / 24;
 
-        return hrs + "h " + mins + " min";
+        String minsStr = (mins + "m");
+        String hrsStr = (hrs != 0) ? (hrs + "h ") : "";
+        String daysStr = (days != 0) ? (days + "d ") : "";
+
+        return daysStr + hrsStr + minsStr;
     }
 }
