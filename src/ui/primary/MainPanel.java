@@ -27,8 +27,8 @@ public final class MainPanel extends JPanel {
         this.setPreferredSize(new Dimension(Constants.WINDOW_WIDTH_MAX, Constants.MAIN_PANEL_HEIGHT));
 
         final JPanel labelPanel = new JPanel();
-        labelPanel.add(new GeneralLabel("Grad", Color.black, SwingConstants.CENTER));
-        labelPanel.setBackground(Color.white);
+        labelPanel.add(new GeneralLabel("Grad", Color.white, SwingConstants.CENTER));
+        labelPanel.setBackground(new Color(33, 32, 28));
         this.add(labelPanel, BorderLayout.NORTH);
 
         graph = InputData.getInstance().getMapGraph();

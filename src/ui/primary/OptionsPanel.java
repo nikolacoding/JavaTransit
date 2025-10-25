@@ -2,6 +2,7 @@ package ui.primary;
 
 import graph.MapGraph;
 import input.InputData;
+import input.StateManager;
 import pathfinding.YenKShortestPaths;
 import ui.secondary.PathsWindow;
 import util.Constants;
@@ -49,10 +50,12 @@ public final class OptionsPanel extends TitledPanel {
                     case "Najnizoj cijeni" -> {
                         this.graph.clearEdges();
                         this.graph.connectAdjacent("price");
+                        StateManager.getInstance().setCriteriaTableName("Cijena");
                     }
                     case "Najkracem vremenu puta" -> {
                         this.graph.clearEdges();
                         this.graph.connectAdjacent("duration");
+                        StateManager.getInstance().setCriteriaTableName("Trajanje");
                     }
                 }
             }
@@ -63,11 +66,9 @@ public final class OptionsPanel extends TitledPanel {
         final JButton findButton = new JButton("Pronadji");
 
         findButton.addActionListener(ae -> {
-            var y = new YenKShortestPaths(this.graph, (String)startComboBox.getSelectedItem(), (String)destinationComboBox.getSelectedItem());
-            var res = y.yen(5);
-            System.out.println(res.toString());
-
-            new PathsWindow((ArrayList<YenKShortestPaths.PathObject>)res);
+            var yenGenerator = new YenKShortestPaths(this.graph, (String)startComboBox.getSelectedItem(), (String)destinationComboBox.getSelectedItem());
+            StateManager.getInstance().setCurrentYenResult(yenGenerator.yen(5));
+            StateManager.getInstance().getSearchResultPanel().setResult();
         });
 
         findButton.setFocusable(false);

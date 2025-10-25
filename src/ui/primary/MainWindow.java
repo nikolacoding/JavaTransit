@@ -1,15 +1,17 @@
 package ui.primary;
 
+import input.StateManager;
 import util.Constants;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.plaf.nimbus.State;
 import java.awt.*;
 
 public final class MainWindow extends JFrame {
-    final JPanel mainPanel;
-    final JPanel optionsPanel;
-    final JPanel searchResultPanel;
+    final MainPanel mainPanel;
+    final OptionsPanel optionsPanel;
+    final SearchResultPanel searchResultPanel;
 
     public MainWindow(){
         super("JavaTransit");
@@ -34,5 +36,9 @@ public final class MainWindow extends JFrame {
         this.repaint();
         this.revalidate();
         this.setVisible(true);
+
+        StateManager.getInstance().setMainPanel(this.mainPanel);
+        StateManager.getInstance().setOptionsPanel(this.optionsPanel);
+        StateManager.getInstance().setSearchResultPanel(this.searchResultPanel);
     }
 }

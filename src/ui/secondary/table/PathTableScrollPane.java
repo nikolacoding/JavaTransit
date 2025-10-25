@@ -8,6 +8,6 @@ public class PathTableScrollPane extends JScrollPane {
         super(pathTable);
 
         this.setPreferredSize(new Dimension());
-        this.setPreferredSize(new Dimension(800, 200));
+        this.setPreferredSize(new Dimension(800, 110));
     }
 }

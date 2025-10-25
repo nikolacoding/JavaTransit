@@ -16,11 +16,13 @@ public final class MapGraph extends MultiGraph {
 
     public MapGraph(String name){
         super(name);
+        this.setAttribute("ui.stylesheet", "graph { fill-color: rgb(33, 32, 28); }");
     }
 
     public void setNodes(String[] cityNames, Map<String, Node> map){
         Arrays.stream(cityNames).forEach(cityName -> {
             Node newNode = this.addNode(cityName);
+            newNode.setAttribute("ui.style", "fill-color: gray;");
             map.put(cityName, newNode);
         });
 
@@ -53,6 +55,7 @@ public final class MapGraph extends MultiGraph {
             } while (this.getEdge(id) != null);
 
             Edge e = this.addEdge(id, from, to, true);
+            e.setAttribute("ui.style", "fill-color: gray; ");
 
             switch (weightCriteria){
                 case "duration" -> weight = departure.getDuration();
