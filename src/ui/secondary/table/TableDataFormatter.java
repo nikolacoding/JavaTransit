@@ -21,10 +21,11 @@ public final class TableDataFormatter {
             res[i][1] = getFormattedPath(paths.get(i));
 
             final double rawValue = paths.get(i).getTotalCost();
-            if (lastCriteria.equals("Cijena"))
-                res[i][2] = String.valueOf(rawValue);
-            else
-                res[i][2] = Time.FormatMinutes(rawValue);
+            switch (lastCriteria){
+                case "Cijena"           -> res[i][2] = String.valueOf(rawValue);
+                case "Trajanje"         -> res[i][2] = Time.FormatMinutes(rawValue);
+                case "Broj presjedanja" -> res[i][2] = String.valueOf((int)rawValue - 1);
+            }
         }
 
         return res;

@@ -61,9 +61,9 @@ public final class MapGraph extends MultiGraph {
             switch (weightCriteria){
                 case "duration" -> weight = departure.getDuration();
                 case "price"    -> weight = departure.getPrice();
+                case "vehicle"  -> weight = 1;
                 default         -> weight = departure.getDuration();
             }
-
             e.setAttribute("weight", weight);
         });
     }

@@ -9,7 +9,6 @@ public final class Time {
     }
 
     public static String FormatMinutes(double minutes){
-
         String mins = String.valueOf((int)minutes % 60);
         String hrs = String.valueOf(((int)minutes / 60));
 

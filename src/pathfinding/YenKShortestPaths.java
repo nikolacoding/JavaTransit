@@ -39,11 +39,6 @@ public class YenKShortestPaths {
         public int compareTo(PathObject other) {
             return Double.compare(this.totalCost, other.totalCost);
         }
-
-        @Override
-        public String toString() {
-            return "Path: " + nodes + " | Cost: " + totalCost;
-        }
     }
 
     private final Map<String, List<GraphEdge>> adjacency;
