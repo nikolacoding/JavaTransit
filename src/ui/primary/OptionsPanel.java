@@ -56,6 +56,11 @@ public final class OptionsPanel extends TitledPanel {
                         this.graph.connectAdjacent("duration");
                         StateManager.getInstance().setCriteriaTableName("Trajanje");
                     }
+                    case "Najmanjem broju presjedanja" -> {
+                        this.graph.clearEdges();
+                        this.graph.connectAdjacent("vehicle");
+                        StateManager.getInstance().setCriteriaTableName("Broj presjedanja");
+                    }
                 }
             }
         });
