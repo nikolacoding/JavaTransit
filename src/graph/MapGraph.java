@@ -7,6 +7,7 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
 import pathfinding.DepartureUtility;
 import util.Constants;
+import util.MathOperations;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,16 +28,31 @@ public final class MapGraph extends MultiGraph {
             map.put(cityName, newNode);
         });
 
-        final Random random = new Random();
-        double minDistX = 5000d;
-        double minDistY = 5000d;
-        for (Node node : this){
-            double x = random.nextDouble() * 5000 + minDistX;
-            minDistX += random.nextDouble() * 75;
+//        final Random random = new Random();
+//        double minDistX = 5000d;
+//        double minDistY = 5000d;
+//        for (Node node : this){
+//            double x = random.nextDouble() * 5000 + minDistX;
+//            minDistX += random.nextDouble() * 75;
+//
+//            double y = random.nextDouble() * 5000 + minDistY;
+//            minDistY += random.nextDouble() * 100 * (random.nextBoolean() ? 1 : -1);
+//            node.setAttribute("xyz", x, y, 0);
+//        }
 
-            double y = random.nextDouble() * 5000 + minDistY;
-            minDistY += random.nextDouble() * 100 * (random.nextBoolean() ? 1 : -1);
-            node.setAttribute("xyz", x, y, 0);
+        final double[] x = {10d};
+        final double[] y = {10d};
+
+        List<Node> nodeList = this.nodes().toList();
+        for (int i = 0, j = 0; i < nodeList.size(); i++, j++){
+            nodeList.get(i).setAttribute("xyz", x[0], y[0], 0);
+
+            if (j == (int)Math.sqrt(nodeList.size())) {
+                y[0] += 10d;
+                j = 0;
+            }
+
+            x[0] += 5d;
         }
     }
 
