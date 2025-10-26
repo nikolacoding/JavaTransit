@@ -22,4 +22,9 @@ public class DetailedPathTable extends JTable {
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         this.getColumn("Voznja #").setCellRenderer(centerRenderer);
     }
+
+    @Override
+    public boolean isCellEditable(int r, int c){
+        return false;
+    }
 }

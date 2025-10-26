@@ -2,7 +2,6 @@ package ui.secondary.table;
 
 import input.InputData;
 import input.types.Departure;
-import org.w3c.dom.Node;
 import pathfinding.DepartureUtility;
 import pathfinding.YenKShortestPaths;
 import util.Time;
@@ -27,7 +26,7 @@ public final class TableDataFormatter {
             final double rawValue = paths.get(i).getTotalCost();
             switch (lastCriteria){
                 case "Cijena"           -> res[i][2] = String.valueOf(rawValue);
-                case "Trajanje"         -> res[i][2] = Time.FormatMinutes(rawValue);
+                case "Trajanje"         -> res[i][2] = Time.minutesToStringTime(rawValue);
                 case "Broj presjedanja" -> res[i][2] = String.valueOf((int)rawValue - 1);
             }
         }
@@ -44,7 +43,7 @@ public final class TableDataFormatter {
             final String next = nodes.get(i + 1);
             final List<Departure> departureList = InputData.getInstance().getDepartureList();
 
-            String nextNode = DepartureUtility.getQuickestDepartureBetweenTwoNodes(departureList, current, next).getFrom() + " -> ";
+            String nextNode = DepartureUtility.getQuickestDepartureBetweenTwoNodes(departureList, current, next, false).getFrom() + " -> ";
 
             res.append(nextNode);
         }

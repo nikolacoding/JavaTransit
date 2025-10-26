@@ -71,7 +71,7 @@ public final class SearchResultPanel extends TitledPanel {
 
                     displayedValue = String.valueOf(rawValue);
                 } else if (tableName.equals("Trajanje")) {
-                    displayedValue = Time.FormatMinutes(rawValue);
+                    displayedValue = Time.minutesToStringTime(rawValue);
                 } else if (tableName.equals("Cijena")) {
                     displayedValue = rawValue + "KM";
                 }

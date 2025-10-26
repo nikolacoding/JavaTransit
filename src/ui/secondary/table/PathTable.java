@@ -1,12 +1,15 @@
 package ui.secondary.table;
 
+import input.InputData;
 import input.StateManager;
+import input.types.Departure;
+import pathfinding.DepartureUtility;
 import ui.tertiary.DetailedPathWindow;
 import ui.tertiary.table.DetailedPathTable;
 import ui.tertiary.table.DetailedPathTableScrollPane;
+import util.Time;
 
 import javax.swing.*;
-import javax.swing.plaf.nimbus.State;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -41,17 +44,57 @@ public final class PathTable extends JTable {
                     smInstance.getBuyButton().setVisible(true);
 
                     // TODO: generisati tabelu za tercijarni prozor
-                    String[][] dptData = new String[][] {{"a", "b", "c", "d"}};
                     String[] dptCols = new String[]{"Voznja #", "Polazni grad", "Vozilo", "Destinacija"};
-
-                    dptData = generateDetailedPathTableData(path);
+                    String[][] dptData = generateDetailedPathTableData(path);
 
                     final DetailedPathTable detailedPathTable = new DetailedPathTable(dptData, dptCols);
                     final DetailedPathTableScrollPane detailedPathTableScrollPane = new DetailedPathTableScrollPane(detailedPathTable);
+
+                    String departureTimeString = "";
+                    String arrivalTimeString = "ph";
+                    String priceString = "";
+
+                    var currentYenRes = smInstance.getCurrentYenResult();
+                    var pathObject = currentYenRes.get(selectedRow);
+
+                    final String selectedRowFirstNode = dptData[selectedRow][1];
+                    final String selectedRowSecondNode = dptData[selectedRow][3];
+
+                    try {
+                        departureTimeString = DepartureUtility.getQuickestDepartureBetweenTwoNodes(
+                                InputData.getInstance().getDepartureList(), selectedRowFirstNode, selectedRowSecondNode, false
+                        ).getDepartureTime();
+                    } catch (NullPointerException npe){
+                        departureTimeString = "8:00";
+                    }
+
+                    if (smInstance.getCriteriaTableName().equals("Cijena")){
+                        priceString = String.valueOf(value);
+
+                        int totalPathTime = DepartureUtility.getMinPathTime(path);
+                        arrivalTimeString = Time.addStringTime24(departureTimeString, Time.minutesToStringTime24(totalPathTime));
+                    }
+                    else if (smInstance.getCriteriaTableName().equals("Trajanje")){
+                        priceString = String.valueOf((double)DepartureUtility.getMinPathPrice(path, true));
+
+                        //                                          8:00                  16h 2m
+                        arrivalTimeString = Time.addStringTime24(departureTimeString, Time.minutesToStringTime24(Time.stringTimeToMinutes(value)));
+                    }
+                    else if (smInstance.getCriteriaTableName().equals("Broj presjedanja")){
+                        priceString = String.valueOf((double)DepartureUtility.getMinPathPrice(path, true));
+
+                        int totalPathTime = DepartureUtility.getMinPathTime(path);
+                        arrivalTimeString = Time.addStringTime24(departureTimeString, Time.minutesToStringTime24(totalPathTime));
+                    }
+
+                    final String departureTimeStringFormatted = "     Polazak: " + departureTimeString;
+                    final String arrivalTimeStringFormatted = "     Dolazak: " + arrivalTimeString;
+                    final String priceStringFormatted = "     Cijena: " + priceString;
+
                     DetailedPathWindow.scrollPane = detailedPathTableScrollPane;
-                    DetailedPathWindow.startTimeLabel.setText("     Polazak: 16:25");
-                    DetailedPathWindow.endTimeLabel.setText("     Dolazak: 21:00");
-                    DetailedPathWindow.priceLabel.setText("     Cijena: 1250KM");
+                    DetailedPathWindow.departureTimeLabel.setText(departureTimeStringFormatted);
+                    DetailedPathWindow.arrivalTimeLabel.setText(arrivalTimeStringFormatted);
+                    DetailedPathWindow.priceLabel.setText(priceStringFormatted);
                 }
             }
         });

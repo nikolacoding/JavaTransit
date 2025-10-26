@@ -13,4 +13,6 @@ public final class Constants {
     public static final String GRAPH_BACKGROUND_COLOR_CSS = "rgb(33, 32, 28)";
     public static final String DEFAULT_NODE_COLOR_CSS = "gray";
     public static final String DEFAULT_EDGE_COLOR_CSS = "gray";
+
+    public static final int YEN_DENOMINATOR = 5;
 }

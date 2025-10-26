@@ -1,6 +1,5 @@
 package ui.tertiary;
 
-import ui.tertiary.table.DetailedPathTable;
 import ui.tertiary.table.DetailedPathTableScrollPane;
 
 import javax.swing.*;
@@ -10,8 +9,8 @@ public final class DetailedPathWindow extends JFrame {
 
     public static DetailedPathTableScrollPane scrollPane = null;
     public static JLabel priceLabel = new JLabel();
-    public static JLabel startTimeLabel = new JLabel();
-    public static JLabel endTimeLabel = new JLabel();
+    public static JLabel departureTimeLabel = new JLabel();
+    public static JLabel arrivalTimeLabel = new JLabel();
 
     public DetailedPathWindow(){
         super("Kupovina karte");
@@ -28,8 +27,8 @@ public final class DetailedPathWindow extends JFrame {
         this.add(scrollPanePanel, BorderLayout.CENTER);
 
         labelsPanel.add(priceLabel);
-        labelsPanel.add(startTimeLabel);
-        labelsPanel.add(endTimeLabel);
+        labelsPanel.add(departureTimeLabel);
+        labelsPanel.add(arrivalTimeLabel);
         bottomPanel.add(labelsPanel, BorderLayout.CENTER);
         bottomPanel.add(new JButton("Potvrdi kupovinu"), BorderLayout.EAST);
         this.add(bottomPanel, BorderLayout.SOUTH);
