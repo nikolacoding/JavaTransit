@@ -11,6 +11,18 @@ public final class Station {
         this.trainStation = trainStation;
     }
 
+    public String getTrainStation() {
+        return trainStation;
+    }
+
+    public String getBusStation() {
+        return busStation;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
     @Override
     public String toString(){
         return city + " " + busStation + " " + trainStation;

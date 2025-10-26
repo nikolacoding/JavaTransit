@@ -1,30 +1,19 @@
 package ui.tertiary.table;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import java.awt.*;
+import ui.shared.GeneralTable;
+import util.constants.TextConstants;
+import util.constants.UIConstants;
 
-public class DetailedPathTable extends JTable {
+public class DetailedPathTable extends GeneralTable {
     public DetailedPathTable(String[][] data, String[] cols) {
         super(data, cols);
 
-        this.getColumn("Voznja #").setPreferredWidth(60);
-        this.getColumn("Polazni grad").setPreferredWidth(230);
-        this.getColumn("Vozilo").setPreferredWidth(80);
-        this.getColumn("Destinacija").setPreferredWidth(230);
+        this.getColumn(TextConstants.DETAILED_PATH_TABLE_COLUMN_NAMES[0]).setPreferredWidth(UIConstants.DETAILED_PATH_TABLE_ID_COLUMN_WIDTH);
+        this.getColumn(TextConstants.DETAILED_PATH_TABLE_COLUMN_NAMES[1]).setPreferredWidth(UIConstants.DETAILED_PATH_TABLE_DEPARTURE_COLUMN_WIDTH);
+        this.getColumn(TextConstants.DETAILED_PATH_TABLE_COLUMN_NAMES[2]).setPreferredWidth(UIConstants.DETAILED_PATH_TABLE_VEHICLE_COLUMN_WIDTH);
+        this.getColumn(TextConstants.DETAILED_PATH_TABLE_COLUMN_NAMES[3]).setPreferredWidth(UIConstants.DETAILED_PATH_TABLE_ARRIVAL_COLUMN_WIDTH);
 
-        this.getTableHeader().setReorderingAllowed(false);
-        this.setFont(new Font("Roboto", Font.PLAIN, 12));
         this.setRowSelectionAllowed(false);
         this.setColumnSelectionAllowed(false);
-
-        var centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        this.getColumn("Voznja #").setCellRenderer(centerRenderer);
-    }
-
-    @Override
-    public boolean isCellEditable(int r, int c){
-        return false;
     }
 }

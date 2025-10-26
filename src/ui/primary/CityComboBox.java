@@ -1,8 +1,8 @@
 package ui.primary;
 
 import graph.MapGraph;
-import input.InputData;
-import pathfinding.PathReconstructor;
+import state.InputData;
+import pathfinding.reconstruction.PathReconstructor;
 
 import java.awt.event.ItemEvent;
 

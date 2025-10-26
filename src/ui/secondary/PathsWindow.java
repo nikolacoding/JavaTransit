@@ -1,55 +1,54 @@
 package ui.secondary;
 
-import input.StateManager;
-import pathfinding.*;
+import pathfinding.yen.types.PathObject;
+import state.UIManager;
+import state.StateManager;
 import ui.secondary.table.PathTable;
 import ui.secondary.table.PathTableScrollPane;
 import ui.secondary.table.TableDataFormatter;
-import ui.tertiary.DetailedPathWindow;
+import ui.shared.GeneralButton;
+import ui.shared.GeneralLabel;
+import ui.shared.Listeners.ButtonListeners;
+import util.constants.TextConstants;
+import util.constants.UIConstants;
 
 import javax.swing.*;
-import javax.swing.plaf.nimbus.State;
 import java.awt.*;
-import java.awt.event.ItemEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public final class PathsWindow extends JFrame {
-    public PathsWindow(ArrayList<YenKShortestPaths.PathObject> paths){
-        super("Rezultat pretrage");
+    public PathsWindow(ArrayList<PathObject> paths){
+        super(TextConstants.PATHS_WINDOW_TITLE);
+
+        final UIManager uimInstance = UIManager.getInstance();
+        final StateManager smInstance = StateManager.getInstance();
 
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setResizable(false);
         this.setLayout(new BorderLayout());
 
         final JPanel mainPanel = new JPanel();
-        final JPanel buyPanel = new JPanel(new BorderLayout());
-        buyPanel.setPreferredSize(new Dimension(1180, 50));
 
-        final String[] tableCols = TableDataFormatter.GetTableCols(StateManager.getInstance().getCriteriaTableName());
-        final String[][] tableData = TableDataFormatter.GetTableData(paths);
+        final JPanel buyPanel = new JPanel(new BorderLayout());
+        buyPanel.setPreferredSize(UIConstants.BUY_PANEL_DIMENSION);
+
+        final String[] tableCols = TableDataFormatter.getTableCols(StateManager.getInstance().getCriteriaTableName());
+        final String[][] tableData = TableDataFormatter.getTableData(paths);
         PathTable table = new PathTable(tableData, tableCols);
         PathTableScrollPane tableScrollPane = new PathTableScrollPane(table);
 
-        final JLabel buyLabel = new JLabel("Izaberi put za kupovinu karte.");
-        final JButton buyButton = new JButton("Kupi kartu");
+        final GeneralLabel buyLabel = new GeneralLabel(TextConstants.SELECT_PATH_LABEL_TEXT, Color.black);
+        final GeneralButton buyButton = new GeneralButton(TextConstants.BUY_TICKET_BUTTON_TEXT);
         buyButton.setVisible(false);
-        StateManager.getInstance().setBuyButton(buyButton);
+        uimInstance.setBuyButton(buyButton);
 
-        buyButton.addActionListener(ae -> {
-            final StateManager smInstance = StateManager.getInstance();
-
-            JLabel topResultLabel = smInstance.getTopResultLabel();
-            //topResultLabel.setText("Karta je kupljena i racun je sacuvan u <RACUN_PATH>");
-            smInstance.getExtraButton().setVisible(false);
-
-            new DetailedPathWindow();
-        });
+        buyButton.addActionListener(ButtonListeners.buyButtonListener);
 
         buyPanel.add(buyLabel, BorderLayout.CENTER);
         buyPanel.add(buyButton, BorderLayout.EAST);
-        StateManager.getInstance().setBuyLabel(buyLabel);
+        uimInstance.setBuyLabel(buyLabel);
 
         mainPanel.add(tableScrollPane);
         this.add(mainPanel, BorderLayout.CENTER);
@@ -73,6 +72,7 @@ public final class PathsWindow extends JFrame {
         this.repaint();
         this.revalidate();
         this.setVisible(true);
+        smInstance.addActiveJFrame(this);
     }
 
     private void closeWindow(){

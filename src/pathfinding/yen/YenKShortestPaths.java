@@ -1,46 +1,12 @@
-package pathfinding;
+package pathfinding.yen;
 
 import org.graphstream.graph.Graph;
+import pathfinding.yen.types.GraphEdge;
+import pathfinding.yen.types.PathObject;
 
 import java.util.*;
 
 public class YenKShortestPaths {
-
-    static class GraphEdge {
-        String to;
-        double cost;
-        String edgeId;
-
-        GraphEdge(String to, double cost, String edgeId) {
-            this.to = to;
-            this.cost = cost;
-            this.edgeId = edgeId;
-        }
-    }
-
-    public static class PathObject implements Comparable<PathObject> {
-        private final List<String> nodes;
-        private final double totalCost;
-
-        PathObject(List<String> nodes, double totalCost) {
-            this.nodes = new ArrayList<>(nodes);
-            this.totalCost = totalCost;
-        }
-
-        public List<String> getNodes(){
-            return nodes;
-        }
-
-        public double getTotalCost(){
-            return this.totalCost;
-        }
-
-        @Override
-        public int compareTo(PathObject other) {
-            return Double.compare(this.totalCost, other.totalCost);
-        }
-    }
-
     private final Map<String, List<GraphEdge>> adjacency;
     private final String source;
     private final String target;
@@ -52,10 +18,10 @@ public class YenKShortestPaths {
     }
 
     private Map<String, List<GraphEdge>> buildAdjacencyMap(Graph graph) {
-        Map<String, List<GraphEdge>> map = new HashMap<>();
+        Map<String, List<GraphEdge>> graphMap = new HashMap<>();
 
         graph.nodes().forEach(node -> {
-            map.put(node.getId(), new ArrayList<>());
+            graphMap.put(node.getId(), new ArrayList<>());
         });
 
         graph.edges().forEach(edge -> {
@@ -70,40 +36,42 @@ public class YenKShortestPaths {
                 }
             }
 
-            map.get(from).add(new GraphEdge(to, cost, edge.getId()));
+            graphMap.get(from).add(new GraphEdge(to, cost, edge.getId()));
         });
 
-        return map;
+        return graphMap;
     }
 
 
     private PathObject dijkstra(String start, Set<String> bannedNodes, Set<String> bannedEdges) {
         Map<String, Double> dist = new HashMap<>();
         Map<String, String> prev = new HashMap<>();
-        PriorityQueue<Map.Entry<String, Double>> pq = new PriorityQueue<>(Comparator.comparingDouble(Map.Entry::getValue));
+        PriorityQueue<Map.Entry<String, Double>> priorityQueue = new PriorityQueue<>(Comparator.comparingDouble(Map.Entry::getValue));
 
         for (String node : adjacency.keySet()) dist.put(node, Double.POSITIVE_INFINITY);
         dist.put(start, 0.0);
-        pq.offer(new AbstractMap.SimpleEntry<>(start, 0.0));
+        priorityQueue.offer(new AbstractMap.SimpleEntry<>(start, 0.0));
 
-        while (!pq.isEmpty()) {
-            Map.Entry<String, Double> entry = pq.poll();
+        while (!priorityQueue.isEmpty()) {
+            Map.Entry<String, Double> entry = priorityQueue.poll();
             String u = entry.getKey();
             double curDist = entry.getValue();
+
             if (curDist > dist.get(u)) continue;
+
             if (u.equals(target)) break;
 
             if (bannedNodes != null && bannedNodes.contains(u)) continue;
 
             for (GraphEdge e : adjacency.getOrDefault(u, Collections.emptyList())) {
-                if (bannedEdges != null && bannedEdges.contains(e.edgeId)) continue;
-                if (bannedNodes != null && bannedNodes.contains(e.to)) continue;
+                if (bannedEdges != null && bannedEdges.contains(e.getEdgeId())) continue;
+                if (bannedNodes != null && bannedNodes.contains(e.getTo())) continue;
 
-                double newDist = dist.get(u) + e.cost;
-                if (newDist < dist.get(e.to)) {
-                    dist.put(e.to, newDist);
-                    prev.put(e.to, u);
-                    pq.offer(new AbstractMap.SimpleEntry<>(e.to, newDist));
+                double newDist = dist.get(u) + e.getCost();
+                if (newDist < dist.get(e.getTo())) {
+                    dist.put(e.getTo(), newDist);
+                    prev.put(e.getTo(), u);
+                    priorityQueue.offer(new AbstractMap.SimpleEntry<>(e.getTo(), newDist));
                 }
             }
         }
@@ -128,34 +96,34 @@ public class YenKShortestPaths {
 
         for (int k = 1; k < K; k++) {
             PathObject lastPath = kPaths.get(k - 1);
-            int pathSize = lastPath.nodes.size();
+            int pathSize = lastPath.getNodes().size();
 
             for (int i = 0; i < pathSize - 1; i++) {
-                String spurNode = lastPath.nodes.get(i);
-                List<String> rootPath = lastPath.nodes.subList(0, i + 1);
+                String nodeId = lastPath.getNodes().get(i);
+                List<String> rootPath = lastPath.getNodes().subList(0, i + 1);
 
                 Set<String> bannedNodes = new HashSet<>();
                 Set<String> bannedEdges = new HashSet<>();
 
                 for (PathObject p : kPaths) {
-                    if (p.nodes.size() > i && p.nodes.subList(0, i + 1).equals(rootPath)) {
-                        String from = p.nodes.get(i);
-                        String to = p.nodes.get(i + 1);
+                    if (p.getNodes().size() > i && p.getNodes().subList(0, i + 1).equals(rootPath)) {
+                        String from = p.getNodes().get(i);
+                        String to = p.getNodes().get(i + 1);
                         for (GraphEdge e : adjacency.getOrDefault(from, Collections.emptyList())) {
-                            if (e.to.equals(to))
-                                bannedEdges.add(e.edgeId);
+                            if (e.getTo().equals(to))
+                                bannedEdges.add(e.getEdgeId());
                         }
                     }
                 }
 
                 for (String node : rootPath) {
-                    if (!node.equals(spurNode)) bannedNodes.add(node);
+                    if (!node.equals(nodeId)) bannedNodes.add(node);
                 }
 
-                PathObject spurPath = dijkstra(spurNode, bannedNodes, bannedEdges);
+                PathObject spurPath = dijkstra(nodeId, bannedNodes, bannedEdges);
                 if (spurPath != null) {
                     List<String> totalPath = new ArrayList<>(rootPath);
-                    totalPath.addAll(spurPath.nodes.subList(1, spurPath.nodes.size()));
+                    totalPath.addAll(spurPath.getNodes().subList(1, spurPath.getNodes().size()));
 
                     double totalCost = 0.0;
                     for (int j = 0; j < totalPath.size() - 1; j++) {
@@ -168,10 +136,9 @@ public class YenKShortestPaths {
             if (candidates.isEmpty()) break;
             PathObject nextPath = candidates.poll();
 
-            // Avoid duplicates
             boolean duplicate = false;
-            for (PathObject p : kPaths) {
-                if (p.nodes.equals(nextPath.nodes)) {
+            for (PathObject po : kPaths) {
+                if (po.getNodes().equals(nextPath.getNodes())) {
                     duplicate = true;
                     break;
                 }
@@ -186,9 +153,9 @@ public class YenKShortestPaths {
     }
 
     private double findEdgeCost(String from, String to) {
-        for (GraphEdge e : adjacency.getOrDefault(from, Collections.emptyList())) {
-            if (e.to.equals(to)) {
-                return e.cost;
+        for (GraphEdge ge : adjacency.getOrDefault(from, Collections.emptyList())) {
+            if (ge.getTo().equals(to)) {
+                return ge.getCost();
             }
         }
         return Double.POSITIVE_INFINITY;

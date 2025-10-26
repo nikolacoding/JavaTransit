@@ -1,13 +1,13 @@
 package ui.secondary.table;
 
+import util.constants.UIConstants;
+
 import javax.swing.*;
-import java.awt.*;
 
 public class PathTableScrollPane extends JScrollPane {
     public PathTableScrollPane(PathTable pathTable){
         super(pathTable);
 
-        this.setPreferredSize(new Dimension());
-        this.setPreferredSize(new Dimension(1180, 110));
+        this.setPreferredSize(UIConstants.PATH_TABLE_SCROLL_PANE_DIMENSION);
     }
 }

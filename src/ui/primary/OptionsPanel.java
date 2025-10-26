@@ -1,27 +1,31 @@
 package ui.primary;
 
-import graph.MapGraph;
-import input.InputData;
-import input.StateManager;
-import pathfinding.PathReconstructor;
-import pathfinding.YenKShortestPaths;
-import util.Constants;
+import state.InputData;
+import state.StateManager;
+import state.UIManager;
+import ui.shared.GeneralButton;
+import ui.shared.GeneralLabel;
+import ui.shared.TitledPanel;
+import util.constants.TextConstants;
+import ui.shared.Listeners.ButtonListeners;
+import ui.shared.Listeners.ComboBoxListeners;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ItemEvent;
 
 public final class OptionsPanel extends TitledPanel {
     private final CityComboBox startComboBox = new CityComboBox("A");
     private final CityComboBox destinationComboBox = new CityComboBox("B");
     private final GeneralComboBox optimizationCriteriaComboBox = new GeneralComboBox();
-    private final MapGraph graph;
 
     public OptionsPanel(){
-        super("Opcije", Color.darkGray, Color.white);
+        super(TextConstants.OPTIONS_GENERAL_LABEL_TEXT, Color.darkGray, Color.white);
         final StateManager smInstance = StateManager.getInstance();
+        final UIManager uimInstance = UIManager.getInstance();
 
-        this.graph = InputData.getInstance().getMapGraph();
+        uimInstance.setStartComboBox(startComboBox);
+        uimInstance.setDestinationComboBox(destinationComboBox);
+        uimInstance.setOptimizationCriteriaComboBox(optimizationCriteriaComboBox);
 
         final JPanel comboBoxPanel = new JPanel();
 
@@ -30,60 +34,25 @@ public final class OptionsPanel extends TitledPanel {
         startComboBox.addItem("");
         startComboBox.setItems(cityNames);
         comboBoxPanel.setBackground(Color.darkGray);
-        comboBoxPanel.add(new GeneralLabel("Polazak", Color.white));
+        comboBoxPanel.add(new GeneralLabel(TextConstants.DEPARTURE_COMBO_BOX_LABEL_TEXT, Color.white));
         comboBoxPanel.add(startComboBox);
 
         destinationComboBox.addItem("");
         destinationComboBox.setItems(cityNames);
-        comboBoxPanel.add(new GeneralLabel("Destinacija", Color.white));
+        comboBoxPanel.add(new GeneralLabel(TextConstants.ARRIVAL_COMBO_BOX_LABEL_TEXT, Color.white));
         comboBoxPanel.add(destinationComboBox);
         this.add(comboBoxPanel, BorderLayout.SOUTH);
 
-        optimizationCriteriaComboBox.setItems(Constants.OPTIMIZATION_CRITERIA);
-        comboBoxPanel.add(new GeneralLabel("Optimizuj po", Color.white));
+        optimizationCriteriaComboBox.setItems(TextConstants.OPTIMIZATION_CRITERIA);
+        comboBoxPanel.add(new GeneralLabel(TextConstants.CRITERIA_COMBO_BOX_LABEL_TEXT, Color.white));
         comboBoxPanel.add(optimizationCriteriaComboBox);
-        optimizationCriteriaComboBox.addItemListener(ie -> {
-            if (ie.getStateChange() == ItemEvent.SELECTED) {
-                String selectedItem = (String) ie.getItem();
-
-                switch (selectedItem) {
-                    case "Najnizoj cijeni" -> {
-                        this.graph.clearEdges();
-                        this.graph.connectAdjacent("price");
-                        smInstance.setCriteriaTableName("Cijena");
-                    }
-                    case "Najkracem vremenu puta" -> {
-                        this.graph.clearEdges();
-                        this.graph.connectAdjacent("duration");
-                        smInstance.setCriteriaTableName("Trajanje");
-                    }
-                    case "Najmanjem broju presjedanja" -> {
-                        this.graph.clearEdges();
-                        this.graph.connectAdjacent("vehicle");
-                        smInstance.setCriteriaTableName("Broj presjedanja");
-                    }
-                }
-            }
-        });
+        optimizationCriteriaComboBox.addItemListener(ComboBoxListeners.optimizationCriteriaComboBoxListener);
 
         this.add(comboBoxPanel, BorderLayout.SOUTH);
+        final GeneralButton findButton = new GeneralButton(TextConstants.FIND_BUTTON_TEXT);
+        findButton.addActionListener(ButtonListeners.findButtonListener);
+        uimInstance.setFindButton(findButton);
 
-        final JButton findButton = new JButton("Pronadji");
-
-        findButton.addActionListener(ae -> {
-            var yenGenerator = new YenKShortestPaths(this.graph, (String)startComboBox.getSelectedItem(), (String)destinationComboBox.getSelectedItem());
-
-            smInstance.setCurrentYenResult(yenGenerator.yen(5));
-            smInstance.getSearchResultPanel().setResult();
-
-            var res = smInstance.getCurrentYenResult();
-            if (!res.isEmpty()) {
-                var pathNodeIds = res.getFirst().getNodes();
-                PathReconstructor.reconstructPath(graph, pathNodeIds, "yellow");
-            }
-        });
-
-        findButton.setFocusable(false);
         comboBoxPanel.add(findButton);
 
         smInstance.addPrimaryInteractiveComponent(this.startComboBox);

@@ -1,15 +1,18 @@
 package ui.primary;
 
 import graph.MapGraph;
-import input.InputData;
+import state.InputData;
 import org.graphstream.graph.Edge;
-import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.swing_viewer.SwingViewer;
 import org.graphstream.ui.swing_viewer.ViewPanel;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
-import util.Constants;
+import ui.shared.GeneralLabel;
+import util.constants.GeneralConstants;
+import util.constants.StyleConstants;
+import util.constants.TextConstants;
+import util.constants.UIConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,11 +27,11 @@ public final class MainPanel extends JPanel {
     public MainPanel(){
         super(new BorderLayout());
 
-        this.setPreferredSize(new Dimension(Constants.WINDOW_WIDTH_MAX, Constants.MAIN_PANEL_HEIGHT));
+        this.setPreferredSize(new Dimension(UIConstants.WINDOW_WIDTH_MAX, UIConstants.MAIN_PANEL_HEIGHT));
 
         final JPanel labelPanel = new JPanel();
-        labelPanel.add(new GeneralLabel("Grad", Color.white, SwingConstants.CENTER));
-        labelPanel.setBackground(new Color(33, 32, 28));
+        labelPanel.add(new GeneralLabel(TextConstants.GRAPH_GENERAL_LABEL_TEXT, StyleConstants.GRAPH_GENERAL_LABEL_COLOR, SwingConstants.CENTER));
+        labelPanel.setBackground(StyleConstants.GRAPH_GENERAL_LABEL_BACKGROUND_COLOR);
         this.add(labelPanel, BorderLayout.NORTH);
 
         graph = InputData.getInstance().getMapGraph();
@@ -36,7 +39,7 @@ public final class MainPanel extends JPanel {
         edgeMap = new HashMap<>();
 
         graph.setNodes(InputData.getInstance().getCountryMap().getCityNames(), nodeMap);
-        graph.connectAdjacent("price");
+        graph.connectAdjacent(GeneralConstants.CRITERIA_PRICE_ID);
 
         SwingViewer graphViewer = new SwingViewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
         graphViewer.disableAutoLayout();
@@ -45,9 +48,5 @@ public final class MainPanel extends JPanel {
         ViewPanel viewPanel = (ViewPanel)view;
 
         this.add(viewPanel, BorderLayout.CENTER);
-    }
-
-    public Graph getGraph(){
-        return this.graph;
     }
 }
