@@ -1,12 +1,17 @@
 package ui.secondary.table;
 
 import input.StateManager;
+import ui.tertiary.DetailedPathWindow;
+import ui.tertiary.table.DetailedPathTable;
+import ui.tertiary.table.DetailedPathTableScrollPane;
 
 import javax.swing.*;
 import javax.swing.plaf.nimbus.State;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import static pathfinding.DepartureUtility.generateDetailedPathTableData;
 
 public final class PathTable extends JTable {
     public PathTable(String[][] data, String[] cols){
@@ -32,8 +37,21 @@ public final class PathTable extends JTable {
                     smInstance.setSelectedRowPath(path);
                     smInstance.setSelectedRowValue(value);
 
-                    smInstance.getBuyLabel().setText("Izabrano: [" + num + "] - Putanja:  " + path + "; vrijednost: " + value);
+                    smInstance.getBuyLabel().setText("Izabrano: [" + num + "] - Putanja:  " + path + "; " + PathTable.this.getColumnName(2) + ": " + value);
                     smInstance.getBuyButton().setVisible(true);
+
+                    // TODO: generisati tabelu za tercijarni prozor
+                    String[][] dptData = new String[][] {{"a", "b", "c", "d"}};
+                    String[] dptCols = new String[]{"Voznja #", "Polazni grad", "Vozilo", "Destinacija"};
+
+                    dptData = generateDetailedPathTableData(path);
+
+                    final DetailedPathTable detailedPathTable = new DetailedPathTable(dptData, dptCols);
+                    final DetailedPathTableScrollPane detailedPathTableScrollPane = new DetailedPathTableScrollPane(detailedPathTable);
+                    DetailedPathWindow.scrollPane = detailedPathTableScrollPane;
+                    DetailedPathWindow.startTimeLabel.setText("     Polazak: 16:25");
+                    DetailedPathWindow.endTimeLabel.setText("     Dolazak: 21:00");
+                    DetailedPathWindow.priceLabel.setText("     Cijena: 1250KM");
                 }
             }
         });

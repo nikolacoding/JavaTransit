@@ -5,6 +5,7 @@ import pathfinding.*;
 import ui.secondary.table.PathTable;
 import ui.secondary.table.PathTableScrollPane;
 import ui.secondary.table.TableDataFormatter;
+import ui.tertiary.DetailedPathWindow;
 
 import javax.swing.*;
 import javax.swing.plaf.nimbus.State;
@@ -40,10 +41,10 @@ public final class PathsWindow extends JFrame {
             final StateManager smInstance = StateManager.getInstance();
 
             JLabel topResultLabel = smInstance.getTopResultLabel();
-            topResultLabel.setText("Karta je kupljena i racun je sacuvan u <RACUN_PATH>");
+            //topResultLabel.setText("Karta je kupljena i racun je sacuvan u <RACUN_PATH>");
             smInstance.getExtraButton().setVisible(false);
 
-            closeWindow();
+            new DetailedPathWindow();
         });
 
         buyPanel.add(buyLabel, BorderLayout.CENTER);

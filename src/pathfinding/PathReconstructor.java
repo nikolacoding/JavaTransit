@@ -15,13 +15,14 @@ public final class PathReconstructor {
     }
 
     public static void reconstructPath(MapGraph graph, List<String> pathNodeIds, String edgeHighlightColorCss){
+        final int numNodes = pathNodeIds.size();
         new Thread(() -> {
-            for (int i = 0; i < pathNodeIds.size() - 1; i++){
+            for (int i = 0; i < numNodes - 1; i++){
                 Edge e = graph.getEdge(pathNodeIds.get(i) + " " + pathNodeIds.get(i + 1) + " 0");
                 e.setAttribute("ui.style", "fill-color: " + edgeHighlightColorCss + "; size: 5px; ");
 
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(2000 / numNodes); // 2 sekunde bez obzira na broj cvorova
                 } catch (InterruptedException ie){
                     System.out.println("Interrupted.");
                 }
