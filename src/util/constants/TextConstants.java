@@ -47,4 +47,8 @@ public final class TextConstants {
     public static final String RESULT_GENERAL_LABEL_TEXT = "Rezultat";
     public static final String RESULT_LABEL_NO_PATHS = "Ne postoji put izmedju dva zadata grada.";
     public static final String RESULT_LABEL_SAME_NODES = "Izabrana su dva ista grada.";
+
+    public static final String RECEIPT_SUCCESS_TEXT = "Racun je uspjesno kupljen i sacuvan u ";
+    public static final String SERIALIZATION_ERROR_LABEL_TEXT = "Greska pri serijalizaciji.";
+    public static final String SERIALIZATION_LABEL_LOG_TEXT = "Greska pri serijalizaciji (PrintWriter neuspjesno instanciran).";
 }

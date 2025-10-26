@@ -38,6 +38,14 @@ public final class PathTable extends GeneralTable {
                     uimInstance.setSelectedRowPath(path);
                     uimInstance.setSelectedRowValue(value);
 
+                    final StateManager smInstance = StateManager.getInstance();
+                    smInstance.setCurrentReceiptPath(path);
+
+                    String[] nodes = smInstance.getCurrentReceiptPath().split(" -> ");
+                    smInstance.setCurrentReceiptNumVehicleChanges(nodes.length - 2);
+                    smInstance.setCurrentReceiptFrom(nodes[0].replace("A", "G").replace("Z", "G"));
+                    smInstance.setCurrentReceiptTo(nodes[nodes.length - 1].replace("A", "G").replace("Z", "G"));
+
                     uimInstance.getBuyLabel().setText("Izabrano: [" + num + "] - Putanja:  " + path + "; " + PathTable.this.getColumnName(2) + ": " + value);
                     uimInstance.getBuyButton().setVisible(true);
 
@@ -67,6 +75,7 @@ public final class PathTable extends GeneralTable {
             departureTimeString = DepartureUtility.getQuickestDepartureBetweenTwoNodes(
                     InputData.getInstance().getDepartureList(), selectedRowFirstNode, selectedRowSecondNode, false
             ).getDepartureTime();
+
         } catch (NullPointerException npe){
             departureTimeString = TextConstants.DEFAULT_DEPARTURE_TIME;
         }
@@ -89,6 +98,11 @@ public final class PathTable extends GeneralTable {
             int totalPathTime = ReconstructionUtility.getMinPathTime(selectedPath);
             arrivalTimeString = Time.addStringTime24(departureTimeString, Time.minutesToStringTime24(totalPathTime));
         }
+
+        smInstance.setCurrentReceiptPrice((int)Double.parseDouble(priceString));
+        smInstance.setCurrentReceiptDepartureTime(departureTimeString);
+        smInstance.setCurrentReceiptArrivalTime(arrivalTimeString);
+        // ostali su uzeti u pozivajucoj funkciji
 
         final String departureTimeStringFormatted = TextConstants.DETAILED_PATH_TABLE_DEPARTURE_TIME_PREFIX + departureTimeString;
         final String arrivalTimeStringFormatted = TextConstants.DETAILED_PATH_TABLE_ARRIVAL_TIME_PREFIX + arrivalTimeString;

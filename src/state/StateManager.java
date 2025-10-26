@@ -1,9 +1,7 @@
 package state;
 
-import pathfinding.yen.YenKShortestPaths;
 import pathfinding.yen.types.PathObject;
 import util.constants.TextConstants;
-import util.constants.UIConstants;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -13,16 +11,27 @@ public final class StateManager {
     private final List<JComponent> primaryInteractiveComponents = new ArrayList<>();
     private String criteriaTableName = TextConstants.CRITERIA_PRICE_DISPLAY_NAME;
     private List<PathObject> currentYenResult;
-    private List<JFrame> activeJFrames = new ArrayList<>();
+    private final List<JFrame> activeJFrames = new ArrayList<>();
 
-    private StateManager(){
+    // Podaci za stampanje racuna
+    private int currentReceiptPrice;
+    private String currentReceiptFrom;
+    private String currentReceiptTo;
+    private String currentReceiptDepartureTime;
+    private String currentReceiptArrivalTime;
+    private int currentReceiptNumVehicleChanges;
 
-    }
+    private String currentReceiptPath;
+
+    private StateManager(){ }
 
     private final static StateManager globalStateManager = new StateManager();
 
     public void closeAllButMainWindow(){
-
+        activeJFrames.forEach(jF -> {
+            jF.setVisible(false);
+            jF.dispose();
+        });
     }
 
     public static StateManager getInstance(){
@@ -59,5 +68,61 @@ public final class StateManager {
 
     public List<JFrame> getActiveJFrames(){
         return this.activeJFrames;
+    }
+
+    public String getCurrentReceiptPath() {
+        return currentReceiptPath;
+    }
+
+    public void setCurrentReceiptPath(String currentReceiptPath) {
+        this.currentReceiptPath = currentReceiptPath;
+    }
+
+    public int getCurrentReceiptNumVehicleChanges() {
+        return currentReceiptNumVehicleChanges;
+    }
+
+    public void setCurrentReceiptNumVehicleChanges(int currentReceiptNumVehicleChanges) {
+        this.currentReceiptNumVehicleChanges = currentReceiptNumVehicleChanges;
+    }
+
+    public String getCurrentReceiptArrivalTime() {
+        return currentReceiptArrivalTime;
+    }
+
+    public void setCurrentReceiptArrivalTime(String currentReceiptArrivalTime) {
+        this.currentReceiptArrivalTime = currentReceiptArrivalTime;
+    }
+
+    public String getCurrentReceiptDepartureTime() {
+        return currentReceiptDepartureTime;
+    }
+
+    public void setCurrentReceiptDepartureTime(String currentReceiptDepartureTime) {
+        this.currentReceiptDepartureTime = currentReceiptDepartureTime;
+    }
+
+    public String getCurrentReceiptTo() {
+        return currentReceiptTo;
+    }
+
+    public void setCurrentReceiptTo(String currentReceiptTo) {
+        this.currentReceiptTo = currentReceiptTo;
+    }
+
+    public String getCurrentReceiptFrom() {
+        return currentReceiptFrom;
+    }
+
+    public void setCurrentReceiptFrom(String currentReceiptFrom) {
+        this.currentReceiptFrom = currentReceiptFrom;
+    }
+
+    public int getCurrentReceiptPrice() {
+        return currentReceiptPrice;
+    }
+
+    public void setCurrentReceiptPrice(int currentReceiptPrice) {
+        this.currentReceiptPrice = currentReceiptPrice;
     }
 }

@@ -14,4 +14,6 @@ public final class GeneralConstants {
     public static final String CRITERIA_PRICE_ID = "price";
     public static final String CRITERIA_DURATION_ID = "duration";
     public static final String CRITERIA_NODES_ID = "vehicle";
+
+    public static final String RECEIPT_PATH = "racuni";
 }

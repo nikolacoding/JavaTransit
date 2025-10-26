@@ -4,6 +4,8 @@ import graph.MapGraph;
 import pathfinding.reconstruction.PathReconstructor;
 import pathfinding.yen.YenKShortestPaths;
 import pathfinding.yen.types.PathObject;
+import serialization.Receipt;
+import serialization.Serializer;
 import state.InputData;
 import state.StateManager;
 import state.UIManager;
@@ -13,7 +15,6 @@ import ui.tertiary.DetailedPathWindow;
 import util.constants.GeneralConstants;
 import util.constants.TextConstants;
 
-import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -56,19 +57,29 @@ public final class Listeners {
         };
 
         public static ActionListener confirmPurchaseListener = (ae) -> {
-            System.out.println("Karta je kupljena i racun je sacuvan u <RACUN_PATH>.");
-            StateManager.getInstance().getActiveJFrames().forEach(jF -> {
-                jF.setVisible(false);
-                jF.dispose();
-            });
-
             final UIManager uimInstance = UIManager.getInstance();
+            final StateManager smInstance = StateManager.getInstance();
+
+            final int price = smInstance.getCurrentReceiptPrice();
+            final String from = smInstance.getCurrentReceiptFrom();
+            final String to = smInstance.getCurrentReceiptTo();
+            final String departureTime = smInstance.getCurrentReceiptDepartureTime();
+            final String arrivalTime = smInstance.getCurrentReceiptArrivalTime();
+            final int numVehicleChanges = smInstance.getCurrentReceiptNumVehicleChanges();
+            final String path = smInstance.getCurrentReceiptPath();
+
+            final Receipt receipt = new Receipt(price, from, to, departureTime, arrivalTime, numVehicleChanges, path);
+            Serializer.serializeReceipt(receipt, uimInstance.getTopResultLabel());
+
+            System.out.println("Karta je kupljena i racun je sacuvan u <RACUN_PATH>.");
 
             uimInstance.getStartComboBox().setEnabled(true);
             uimInstance.getDestinationComboBox().setEnabled(true);
             uimInstance.getOptimizationCriteriaComboBox().setEnabled(true);
             uimInstance.getFindButton().setEnabled(true);
             uimInstance.getExtraButton().setEnabled(true);
+
+            smInstance.closeAllButMainWindow();
         };
     }
 

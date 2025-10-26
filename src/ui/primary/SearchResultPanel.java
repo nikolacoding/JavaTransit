@@ -25,7 +25,7 @@ public final class SearchResultPanel extends TitledPanel {
         final StateManager smInstance = StateManager.getInstance();
         final UIManager uimInstance = UIManager.getInstance();
 
-        topResultLabel.setFont(new Font(UIConstants.PRIMARY_FONT_NAME, Font.BOLD, 20));
+        topResultLabel.setFont(new Font(UIConstants.PRIMARY_FONT_NAME, Font.BOLD, 14));
         uimInstance.setTopResultLabel(this.topResultLabel);
 
         final JPanel rightPanel = new JPanel();
