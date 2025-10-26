@@ -1,6 +1,7 @@
 package ui.primary;
 
 import pathfinding.yen.types.PathObject;
+import serialization.Serializer;
 import state.UIManager;
 import state.StateManager;
 import ui.shared.GeneralButton;
@@ -27,6 +28,7 @@ public final class SearchResultPanel extends TitledPanel {
 
         topResultLabel.setFont(new Font(UIConstants.PRIMARY_FONT_NAME, Font.BOLD, 14));
         uimInstance.setTopResultLabel(this.topResultLabel);
+        setTopResultLabelToDefaultState();
 
         final JPanel rightPanel = new JPanel();
         final JPanel leftPanel = new JPanel();
@@ -92,5 +94,13 @@ public final class SearchResultPanel extends TitledPanel {
 
         topResultLabel.setText(text);
         uimInstance.getExtraButton().setVisible(buttonState);
+    }
+
+    private void setTopResultLabelToDefaultState(){
+        int[] res = Serializer.getSalesInfo();
+
+        final String text = "Do sada prodano " + res[0] + " karata i zaradjeno ukupno " + res[1] + TextConstants.CURRENCY + ".";
+
+        this.topResultLabel.setText(text);
     }
 }

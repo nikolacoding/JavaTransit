@@ -6,6 +6,7 @@ import util.constants.TextConstants;
 
 import javax.swing.*;
 import java.io.*;
+import java.nio.file.Files;
 
 public final class Serializer {
 
@@ -45,5 +46,33 @@ public final class Serializer {
                 System.out.println(TextConstants.SERIALIZATION_LABEL_LOG_TEXT);
             }
         }
+    }
+
+    public static int[] getSalesInfo(){
+        int[] res = new int[]{0, 0};
+
+        File dir = new File(GeneralConstants.RECEIPT_PATH);
+        try {
+            Files.walk(dir.toPath())
+                    .filter(p -> p.toFile().getName().startsWith("RACUN"))
+                    .forEach(file -> {
+
+                        res[0]++;
+
+                        try {
+                            Files.lines(file)
+                                    .filter(line -> line.startsWith("Cijena:"))
+                                    .map(line -> line.replace(" ", ""))
+                                    .map(line -> line.replace("\t", ""))
+                                    .forEach(cijenaLine -> res[1] += Integer.parseInt(cijenaLine.substring(7)));
+                        } catch (IOException ioe) {
+                            System.out.println("IOException (na Files.lines())");
+                        }
+                    });
+        } catch (IOException ioe){
+            System.out.println("IOException (na Files.walk())");
+        }
+
+        return res;
     }
 }

@@ -1,0 +1,8 @@
+Vrijeme:	26.10.2025. u 20:56;40
+Cijena:		3225
+
+Relacija:	G_0_4 do G_6_7
+Polazak:	04:30
+Dolazak:	17:32
+Presjedanja:	8
+Putanja:	Z_0_4 -> Z_1_4 -> A_2_4 -> A_3_4 -> A_3_5 -> A_4_5 -> A_4_6 -> A_4_7 -> A_5_7  -> G_6_7
