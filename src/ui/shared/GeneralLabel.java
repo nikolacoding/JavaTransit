@@ -1,4 +1,6 @@
-package ui.primary;
+package ui.shared;
+
+import util.constants.UIConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,14 +10,14 @@ public final class GeneralLabel extends JLabel {
         super(text);
 
         this.setForeground(Color.white);
-        this.setFont(new Font("Roboto", Font.PLAIN, 14));
+        this.setFont(new Font(UIConstants.PRIMARY_FONT_NAME, Font.PLAIN, UIConstants.GENERAL_LABEL_FONT_SIZE));
     }
 
     public GeneralLabel(String text, Color color){
         super(text);
 
         this.setForeground(color);
-        this.setFont(new Font("Roboto", Font.PLAIN, 14));
+        this.setFont(new Font(UIConstants.PRIMARY_FONT_NAME, Font.PLAIN, UIConstants.GENERAL_LABEL_FONT_SIZE));
     }
 
     public GeneralLabel(String text, Color color, int horizonalAlignment){
@@ -23,6 +25,6 @@ public final class GeneralLabel extends JLabel {
 
         this.setForeground(color);
         this.setHorizontalAlignment(horizonalAlignment);
-        this.setFont(new Font("Roboto", Font.PLAIN, 14));
+        this.setFont(new Font(UIConstants.PRIMARY_FONT_NAME, Font.PLAIN, UIConstants.GENERAL_LABEL_FONT_SIZE));
     }
 }

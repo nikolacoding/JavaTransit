@@ -1,7 +1,5 @@
 package input.types;
 
-import java.util.Arrays;
-
 public final class CountryMap {
     private final String[][] matrix;
 

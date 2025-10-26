@@ -1,6 +1,6 @@
-package ui.primary;
+package ui.shared;
 
-import util.Constants;
+import util.constants.UIConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +11,7 @@ public class TitledPanel extends JPanel {
 
         this.setLayout(new BorderLayout());
         this.setBackground(bgColor);
-        this.setPreferredSize(new Dimension(Constants.WINDOW_WIDTH_MAX, Constants.TITLED_PANEL_HEIGHT));
+        this.setPreferredSize(new Dimension(UIConstants.WINDOW_WIDTH_MAX, UIConstants.TITLED_PANEL_HEIGHT));
 
         final JPanel labelPanel = new JPanel();
         labelPanel.add(new GeneralLabel(title, labelColor, SwingConstants.CENTER));

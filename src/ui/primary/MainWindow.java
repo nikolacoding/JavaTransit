@@ -1,11 +1,11 @@
 package ui.primary;
 
-import input.StateManager;
-import util.Constants;
+import state.StateManager;
+import state.UIManager;
+import util.constants.TextConstants;
+import util.constants.UIConstants;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.plaf.nimbus.State;
 import java.awt.*;
 
 public final class MainWindow extends JFrame {
@@ -14,7 +14,9 @@ public final class MainWindow extends JFrame {
     final SearchResultPanel searchResultPanel;
 
     public MainWindow(){
-        super("JavaTransit");
+        super(TextConstants.MAIN_WINDOW_TITLE);
+
+        final UIManager uimInstance = UIManager.getInstance();
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
@@ -23,7 +25,7 @@ public final class MainWindow extends JFrame {
         mainPanel = new MainPanel();
 
         JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.setPreferredSize(new Dimension(Constants.WINDOW_WIDTH_MAX, Constants.BOTTOM_PANEL_HEIGHT));
+        bottomPanel.setPreferredSize(new Dimension(UIConstants.WINDOW_WIDTH_MAX, UIConstants.BOTTOM_PANEL_HEIGHT));
         optionsPanel = new OptionsPanel();
         searchResultPanel = new SearchResultPanel();
         bottomPanel.add(optionsPanel, BorderLayout.SOUTH);
@@ -37,8 +39,8 @@ public final class MainWindow extends JFrame {
         this.revalidate();
         this.setVisible(true);
 
-        StateManager.getInstance().setMainPanel(this.mainPanel);
-        StateManager.getInstance().setOptionsPanel(this.optionsPanel);
-        StateManager.getInstance().setSearchResultPanel(this.searchResultPanel);
+        uimInstance.setMainPanel(this.mainPanel);
+        uimInstance.setOptionsPanel(this.optionsPanel);
+        uimInstance.setSearchResultPanel(this.searchResultPanel);
     }
 }

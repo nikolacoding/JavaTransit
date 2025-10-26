@@ -1,13 +1,11 @@
-import input.InputData;
+import state.InputData;
 import input.TransportDataParser;
-import pathfinding.DepartureUtility;
 import ui.primary.MainWindow;
-import util.Time;
 
 public class Main {
     public static void main(String[] args) {
-        if (TransportDataParser.SetJsonPath("transport_dataMP.json")) {
-            InputData.setInputData(TransportDataParser.GenerateCountryMap(), TransportDataParser.GenerateStations(), TransportDataParser.GenerateDepartures());
+        if (TransportDataParser.setJsonPath("transport_dataMP.json")) {
+            InputData.setInputData(TransportDataParser.generateCountryMap(), TransportDataParser.generateStations(), TransportDataParser.generateDepartures());
             new MainWindow();
         }
     }

@@ -1,33 +1,34 @@
 package graph;
 
-import input.InputData;
+import state.InputData;
 import input.types.Departure;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
-import pathfinding.DepartureUtility;
-import util.Constants;
-import util.MathOperations;
+import util.DepartureUtility;
+import util.constants.GeneralConstants;
+import util.constants.StyleConstants;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public final class MapGraph extends MultiGraph {
 
     public MapGraph(String name){
         super(name);
-        this.setAttribute("ui.stylesheet", "graph { fill-color: " + Constants.GRAPH_BACKGROUND_COLOR_CSS + "; }");
+        this.setAttribute("ui.stylesheet", StyleConstants.GRAPH_STYLESHEET);
     }
 
     public void setNodes(String[] cityNames, Map<String, Node> map){
         Arrays.stream(cityNames).forEach(cityName -> {
             Node newNode = this.addNode(cityName);
-            newNode.setAttribute("ui.style", "fill-color: " + Constants.DEFAULT_NODE_COLOR_CSS + ";");
+            newNode.setAttribute("ui.style", StyleConstants.NODE_STYLE_DEFAULT);
             map.put(cityName, newNode);
         });
 
+// (Stari algoritam za raspodjelu cvorova na vizuelnom prikazu)
+//
 //        final Random random = new Random();
 //        double minDistX = 5000d;
 //        double minDistY = 5000d;
@@ -40,19 +41,19 @@ public final class MapGraph extends MultiGraph {
 //            node.setAttribute("xyz", x, y, 0);
 //        }
 
-        final double[] x = {10d};
-        final double[] y = {10d};
+        final double[] x = { 10d };
+        final double[] y = { 10d };
 
         List<Node> nodeList = this.nodes().toList();
         for (int i = 0, j = 0; i < nodeList.size(); i++, j++){
             nodeList.get(i).setAttribute("xyz", x[0], y[0], 0);
 
             if (j == (int)Math.sqrt(nodeList.size())) {
-                y[0] += 10d;
+                y[0] += GeneralConstants.NODE_DISTANCE_Y;
                 j = 0;
             }
 
-            x[0] += 5d;
+            x[0] += GeneralConstants.NODE_DISTANCE_X;
         }
     }
 
@@ -63,6 +64,7 @@ public final class MapGraph extends MultiGraph {
             final String from = DepartureUtility.stationToCity(departure.getFrom());
             final String to = DepartureUtility.stationToCity(departure.getTo());
             final int weight;
+
             int subId = -1;
             String id;
 
@@ -72,7 +74,7 @@ public final class MapGraph extends MultiGraph {
             } while (this.getEdge(id) != null);
 
             Edge e = this.addEdge(id, from, to, true);
-            e.setAttribute("ui.style", "fill-color: " + Constants.DEFAULT_EDGE_COLOR_CSS + ";");
+            e.setAttribute("ui.style", StyleConstants.EDGE_STYLE_DEFAULT);
 
             switch (weightCriteria){
                 case "duration" -> weight = departure.getDuration();
@@ -92,7 +94,7 @@ public final class MapGraph extends MultiGraph {
     @Override
     public Node addNode(String s){
         Node res = super.addNode(s);
-        res.setAttribute("ui.style", "size: 10px; fill-color: " + Constants.DEFAULT_NODE_COLOR_CSS + ";");
+        res.setAttribute("ui.style", StyleConstants.NODE_STYLE_DEFAULT);
         return res;
     }
 
@@ -103,13 +105,13 @@ public final class MapGraph extends MultiGraph {
         if (n != null) {
             if (state) {
                 switch (type) {
-                    case "A" -> style = "fill-color: red; size: 10px;";     // selected (polazak)
-                    case "B" -> style = "fill-color: blue; size: 10px;";    // selected (destinacija)
-                    case "C" -> style = "fill-color: yellow; size: 10px;";  // selected (oba/debug)
-                    default -> style = "fill-color: " + Constants.DEFAULT_NODE_COLOR_CSS + ";";   // deselected
+                    case "A" -> style = StyleConstants.NODE_STYLE_SELECTED_A;    // selected (polazak)
+                    case "B" -> style = StyleConstants.NODE_STYLE_SELECTED_B;    // selected (destinacija)
+                    case "C" -> style = StyleConstants.NODE_STYLE_SELECTED_C;    // selected (debug)
+                    default -> style = StyleConstants.NODE_STYLE_DEFAULT;        // deselected
                 }
             }
-            else style = "fill-color: " + Constants.DEFAULT_NODE_COLOR_CSS + ";";
+            else style = StyleConstants.NODE_STYLE_DEFAULT;
 
             this.getNode(node).setAttribute("ui.style", style);
         }

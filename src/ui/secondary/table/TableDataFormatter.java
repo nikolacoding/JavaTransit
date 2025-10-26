@@ -1,22 +1,23 @@
 package ui.secondary.table;
 
-import input.InputData;
+import pathfinding.yen.types.PathObject;
+import state.InputData;
 import input.types.Departure;
-import pathfinding.DepartureUtility;
-import pathfinding.YenKShortestPaths;
+import util.DepartureUtility;
 import util.Time;
+import util.constants.TextConstants;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class TableDataFormatter {
     private static String lastCriteria = null;
-    public static String[] GetTableCols(String criteria){
+    public static String[] getTableCols(String criteria){
         lastCriteria = criteria;
-        return new String[]{"#", "Putanja", criteria};
+        return new String[]{ TextConstants.PATH_TABLE_COLUMN_NAMES[0], TextConstants.PATH_TABLE_COLUMN_NAMES[1], criteria };
     }
 
-    public static String[][] GetTableData(ArrayList<YenKShortestPaths.PathObject> paths){
+    public static String[][] getTableData(ArrayList<PathObject> paths){
         String[][] res = new String[paths.size()][3];
 
         for (int i = 0; i < paths.size(); i++) {
@@ -25,16 +26,16 @@ public final class TableDataFormatter {
 
             final double rawValue = paths.get(i).getTotalCost();
             switch (lastCriteria){
-                case "Cijena"           -> res[i][2] = String.valueOf(rawValue);
-                case "Trajanje"         -> res[i][2] = Time.minutesToStringTime(rawValue);
-                case "Broj presjedanja" -> res[i][2] = String.valueOf((int)rawValue - 1);
+                case TextConstants.CRITERIA_PRICE_DISPLAY_NAME        -> res[i][2] = String.valueOf(rawValue);
+                case TextConstants.CRITERIA_DURATION_DISPLAY_NAME     -> res[i][2] = Time.minutesToStringTime(rawValue);
+                case TextConstants.CRITERIA_NODES_DISPLAY_NAME        -> res[i][2] = String.valueOf((int)rawValue - 1);
             }
         }
 
         return res;
     }
 
-    private static String getFormattedPath(YenKShortestPaths.PathObject pathObject){
+    private static String getFormattedPath(PathObject pathObject){
         List<String> nodes = pathObject.getNodes();
         StringBuilder res = new StringBuilder();
 
@@ -43,7 +44,8 @@ public final class TableDataFormatter {
             final String next = nodes.get(i + 1);
             final List<Departure> departureList = InputData.getInstance().getDepartureList();
 
-            String nextNode = DepartureUtility.getQuickestDepartureBetweenTwoNodes(departureList, current, next, false).getFrom() + " -> ";
+            var quickestDep = DepartureUtility.getQuickestDepartureBetweenTwoNodes(departureList, current, next, false).getFrom();
+            String nextNode = quickestDep + " -> ";
 
             res.append(nextNode);
         }

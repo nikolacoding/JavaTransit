@@ -1,9 +1,10 @@
-package input;
+package state;
 
 import graph.MapGraph;
 import input.types.CountryMap;
 import input.types.Departure;
 import input.types.Station;
+import util.constants.GeneralConstants;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public final class InputData {
         this.stationList = stationList;
         this.departureList = departureList;
 
-        mapGraph = new MapGraph("MainGraph");
+        mapGraph = new MapGraph(GeneralConstants.MAIN_GRAPH_ID);
 }
 
     public static void setInputData(CountryMap countryMap, List<Station> stationList, List<Departure> departureList){

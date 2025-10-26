@@ -6,19 +6,16 @@ import input.types.Station;
 import util.StringOperations;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.function.Consumer;
 
 public final class TransportDataParser {
     public static File jsonFile = null;
     public static Path jsonPath = null;
 
-    public static boolean SetJsonPath(String path){
+    public static boolean setJsonPath(String path){
         jsonFile = new File(path);
         if (jsonFile.exists()) {
             jsonPath = jsonFile.toPath();
@@ -30,22 +27,14 @@ public final class TransportDataParser {
         }
     }
 
-    public static void ForEachLine(Consumer<String> action) {
-        try {
-            Files.lines(jsonPath).forEach(action);
-        } catch (IOException ioe){
-            System.out.println("Greska pri radu sa JSON-om");
-        }
-    }
-
-    private static List<String> GetStringsFromJsonOfType(String type){
+    private static List<String> getStringsFromJsonOfType(String type){
         List<String> lines = new ArrayList<>();
 
         try {
             final Scanner fileScanner = new Scanner(jsonFile);
 
-            String startReadingAt = null;
-            String stopReadiNgAt = null;
+            String startReadingAt;
+            String stopReadiNgAt;
 
             switch (type.toLowerCase()){
                 case "countrymap" -> {
@@ -68,7 +57,6 @@ public final class TransportDataParser {
             while (fileScanner.hasNextLine()){
                 String line = fileScanner.nextLine();
                 if (line.startsWith(startReadingAt)){
-                    //fileScanner.nextLine();
                     while (!line.startsWith(stopReadiNgAt)){
                         lines.add(line);
                         line = fileScanner.nextLine();
@@ -83,8 +71,8 @@ public final class TransportDataParser {
         return lines;
     }
 
-    public static CountryMap GenerateCountryMap(){
-        List<String> lines = GetStringsFromJsonOfType("countrymap");
+    public static CountryMap generateCountryMap(){
+        List<String> lines = getStringsFromJsonOfType("countrymap");
 
         if (lines != null) {
             final int n = lines.size();
@@ -107,8 +95,8 @@ public final class TransportDataParser {
         return null;
     }
 
-    public static List<Departure> GenerateDepartures(){
-        List<String> lines = GetStringsFromJsonOfType("departures");
+    public static List<Departure> generateDepartures(){
+        List<String> lines = getStringsFromJsonOfType("departures");
         List<Departure> res = new ArrayList<>();
 
         if (lines != null){
@@ -146,8 +134,8 @@ public final class TransportDataParser {
         return null;
     }
 
-    public static List<Station> GenerateStations(){
-        List<String> lines = GetStringsFromJsonOfType("stations");
+    public static List<Station> generateStations(){
+        List<String> lines = getStringsFromJsonOfType("stations");
         List<Station> res = new ArrayList<>();
 
         if (lines != null){

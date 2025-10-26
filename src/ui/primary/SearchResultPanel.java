@@ -1,25 +1,32 @@
 package ui.primary;
 
-import input.StateManager;
-import pathfinding.YenKShortestPaths;
-import ui.secondary.PathsWindow;
-import util.Constants;
+import pathfinding.yen.types.PathObject;
+import state.UIManager;
+import state.StateManager;
+import ui.shared.GeneralButton;
+import ui.shared.GeneralLabel;
+import ui.shared.TitledPanel;
 import util.Time;
+import util.constants.TextConstants;
+import util.constants.UIConstants;
+import ui.shared.Listeners.ButtonListeners;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public final class SearchResultPanel extends TitledPanel {
 
     private static final Color bgColor = new Color(242, 240, 100);
-    private final JLabel topResultLabel = new JLabel();
+    private final JLabel topResultLabel = new GeneralLabel("", Color.black);
 
     public SearchResultPanel(){
-        super("Rezultat", bgColor, Color.black);
-        topResultLabel.setFont(new Font("Roboto", Font.BOLD, 20));
-        StateManager.getInstance().setTopResultLabel(this.topResultLabel);
+        super(TextConstants.RESULT_GENERAL_LABEL_TEXT, bgColor, Color.black);
+
+        final StateManager smInstance = StateManager.getInstance();
+        final UIManager uimInstance = UIManager.getInstance();
+
+        topResultLabel.setFont(new Font(UIConstants.PRIMARY_FONT_NAME, Font.BOLD, 20));
+        uimInstance.setTopResultLabel(this.topResultLabel);
 
         final JPanel rightPanel = new JPanel();
         final JPanel leftPanel = new JPanel();
@@ -27,35 +34,33 @@ public final class SearchResultPanel extends TitledPanel {
         rightPanel.setBackground(bgColor);
         leftPanel.setBackground(bgColor);
 
-        rightPanel.setPreferredSize(new Dimension(300, Constants.TITLED_PANEL_HEIGHT));
+        rightPanel.setPreferredSize(new Dimension(UIConstants.SEARCH_RESULT_PANEL_RIGHT_SUBPANEL_SIZE, UIConstants.TITLED_PANEL_HEIGHT));
         leftPanel.add(topResultLabel);
 
-        final JButton extraButton = new JButton("Detaljno");
-        extraButton.addActionListener(ae -> {
-            final List<YenKShortestPaths.PathObject> rawData = StateManager.getInstance().getCurrentYenResult();
-            final ArrayList<YenKShortestPaths.PathObject> data = (ArrayList<YenKShortestPaths.PathObject>)rawData;
-            new PathsWindow(data);
-        });
-        extraButton.setFocusable(false);
+        final GeneralButton extraButton = new GeneralButton(TextConstants.EXTRA_BUTTON_TEXT);
+        extraButton.addActionListener(ButtonListeners.extraButtonListener);
+
         rightPanel.add(extraButton);
         extraButton.setVisible(false);
-        StateManager.getInstance().setExtraButton(extraButton);
+        uimInstance.setExtraButton(extraButton);
 
         this.add(leftPanel, BorderLayout.CENTER);
         this.add(rightPanel, BorderLayout.EAST);
 
-        StateManager.getInstance().addPrimaryInteractiveComponent(extraButton);
+        smInstance.addPrimaryInteractiveComponent(extraButton);
     }
 
     public void setResult(){
+        final UIManager uimInstance = UIManager.getInstance();
         final StateManager smInstance = StateManager.getInstance();
-        YenKShortestPaths.PathObject topResult = null;
+
+        PathObject topResult = null;
         boolean buttonState;
         String text = "";
 
         if (!smInstance.getCurrentYenResult().isEmpty()) {
             if (smInstance.getCurrentYenResult().size() == 1 && (int)smInstance.getCurrentYenResult().getFirst().getTotalCost() == 0){
-                text = "Izabrana su dva ista grada.";
+                text = TextConstants.RESULT_LABEL_SAME_NODES;
                 buttonState = false;
             }
             else {
@@ -64,16 +69,16 @@ public final class SearchResultPanel extends TitledPanel {
                 int rawValue = (int) topResult.getTotalCost();
                 String displayedValue = "";
 
-                if (tableName.equals("Broj presjedanja")) {
+                if (tableName.equals(TextConstants.CRITERIA_NODES_DISPLAY_NAME)) {
                     rawValue--;
                     if (rawValue <= 0)
                         rawValue = 0;
 
                     displayedValue = String.valueOf(rawValue);
-                } else if (tableName.equals("Trajanje")) {
+                } else if (tableName.equals(TextConstants.CRITERIA_DURATION_DISPLAY_NAME)) {
                     displayedValue = Time.minutesToStringTime(rawValue);
-                } else if (tableName.equals("Cijena")) {
-                    displayedValue = rawValue + "KM";
+                } else if (tableName.equals(TextConstants.CRITERIA_PRICE_DISPLAY_NAME)) {
+                    displayedValue = rawValue + TextConstants.CURRENCY;
                 }
 
                 text = tableName + " najoptimalnijeg puta je " + displayedValue + ".";
@@ -81,11 +86,11 @@ public final class SearchResultPanel extends TitledPanel {
             }
         }
         else {
-            text = "Ne postoji put izmedju dva zadata cvora.";
+            text = TextConstants.RESULT_LABEL_NO_PATHS;
             buttonState = false;
         }
 
         topResultLabel.setText(text);
-        StateManager.getInstance().getExtraButton().setVisible(buttonState);
+        uimInstance.getExtraButton().setVisible(buttonState);
     }
 }
