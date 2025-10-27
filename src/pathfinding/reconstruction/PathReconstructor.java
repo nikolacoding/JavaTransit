@@ -7,13 +7,31 @@ import util.constants.StyleConstants;
 
 import java.util.List;
 
+/**
+ * Klasa metoda za vizuelnu rekonstrukciju (optimalne) putanje na vizuelnom prikazu grafa.
+ * @author Nikola Markovic
+ */
 public final class PathReconstructor {
+    /**
+     * Metoda koja uklanja sve prethodne rekonstrukcije, odnosno zadaje default stil
+     * svakoj grani grafa.
+     * @param graph Graf
+     * @author Nikola Markovic
+     */
     public static void undoAllPreviousReconstructions(MapGraph graph){
         List<Edge> allEdges = graph.edges().toList();
 
         allEdges.forEach(edge -> edge.setAttribute("ui.style", StyleConstants.EDGE_STYLE_DEFAULT));
     }
 
+    /**
+     * Metoda za rekonstrukciju putanje grafa. Nad svakom granom u zadatoj putanji grafa se visenitno primjenjuje promjena
+     * stila svakih x milisekundi gdje je x = <code>GeneralConstants.PATH_RECONSTRUCTION_TIME_MS</code> / (broj cvorova).
+     * Potpuna rekonstrukcija putanje traje ukupnih <code>GeneralConstants.PATH_RECONSTRUCTION_TIME_MS</code> milisekundi.
+     * @param graph
+     * @param pathNodeIds
+     * @author Nikola Markovic
+     */
     public static void reconstructPath(MapGraph graph, List<String> pathNodeIds){
         final int numNodes = pathNodeIds.size();
         new Thread(() -> {
@@ -28,6 +46,5 @@ public final class PathReconstructor {
                 }
             }
         }).start();
-
     }
 }

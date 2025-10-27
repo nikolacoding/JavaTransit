@@ -13,11 +13,20 @@ import ui.shared.Listeners.ComboBoxListeners;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Klasa koja opisuje panel koji sadrzi elemente za rukovanje grafom sa glavnog panela.
+ * @author Nikola Markovic
+ */
 public final class OptionsPanel extends TitledPanel {
     private final CityComboBox startComboBox = new CityComboBox("A");
     private final CityComboBox destinationComboBox = new CityComboBox("B");
     private final GeneralComboBox optimizationCriteriaComboBox = new GeneralComboBox();
 
+    /**
+     * Konstruktor, po pozivu, generise i postavlja osnovne ComboBox elemente kao i njihove propratne JLabel (tj. GeneralLabel)
+     * objekte i dodjeljuje im odgovarajuce Listenere.
+     * @author Nikola Markovic
+     */
     public OptionsPanel(){
         super(TextConstants.OPTIONS_GENERAL_LABEL_TEXT, Color.darkGray, Color.white);
         final StateManager smInstance = StateManager.getInstance();

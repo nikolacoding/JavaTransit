@@ -16,7 +16,19 @@ import java.awt.event.MouseEvent;
 
 import util.constants.TextConstants;
 
+/**
+ * Klasa koja opisuje tabelu 5 najoptimalnijih putanja koje se prikazuju korisniku po pritisku na odgovarajuce dugme
+ * u primarnom dijelu aplikacije.
+ * @author Nikola Markovic
+ */
 public final class PathTable extends GeneralTable {
+    /**
+     * Konstruktor, po pozivu, generise standardnu JTable -> GeneralTable tabelu, dodjeljuje joj odgovarajuce vrijednosti
+     * i Listener koji omogucava interakciju sa pojedinacnim redovima.
+     * @param data Podaci u tabeli (dim. n x m)
+     * @param cols Nazivi headera tabele (dim. m)
+     * @author Nikola Markovic
+     */
     public PathTable(String[][] data, String[] cols){
         super(data, cols);
 
@@ -55,6 +67,15 @@ public final class PathTable extends GeneralTable {
         });
     }
 
+    /**
+     * Metoda koja pre-generise narednu tabelu u tercijarnom dijelu UI-ja, koja se korisniku prikazuje ukoliko odluci
+     * da detaljno pregleda ili kupi kartu za neku putanju interakcijom sa trenutnom tabelom.
+     *
+     * @param selectedRow Odabrani red (0-indeksiran)
+     * @param selectedPath Odabrana putanja
+     * @param selectedValue Odabrana vrijednost
+     * @author Nikola Markovic
+     */
     private void generateDetailedPathWindowTable(int selectedRow, String selectedPath, String selectedValue){
         var smInstance = StateManager.getInstance();
 

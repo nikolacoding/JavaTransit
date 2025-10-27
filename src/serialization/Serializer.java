@@ -1,6 +1,5 @@
 package serialization;
 
-import org.w3c.dom.Text;
 import util.constants.GeneralConstants;
 import util.constants.TextConstants;
 
@@ -8,8 +7,19 @@ import javax.swing.*;
 import java.io.*;
 import java.nio.file.Files;
 
+/**
+ * Klasa koja sadrzi metode za serijalizaciju i deserijalizaciju ranije serijalizovanih fiskalnih racuna.
+ * @author Nikola Markovic
+ */
 public final class Serializer {
 
+    /**
+     * Klasa za serijalizaciju odnosno upis racuna u tekstualni fajl na predodredjenoj relativnoj putanji <code>\GeneralConstants.RECEIPT_PATH</code>.
+     * Ukoliko postoji direktorijum, tekstualni fajl se upisuje u njega. Ukoliko ne postoji direktorijum, kreira se pa se potom u njega upisuje tekstualni fajl.
+     * @param receipt Racun za serijalizaciju
+     * @param statusLabel JLabel objekat koji ce da poprimi tekst koji reprezentuje rezultat serijalizacije nakon pokusaja iste
+     * @author Nikola Markovic
+     */
     public static void serializeReceipt(Receipt receipt, JLabel statusLabel){
         final String dirPath = GeneralConstants.RECEIPT_PATH;
         final String outputFilePath = dirPath + File.separator + receipt.toString() + ".txt";
@@ -48,6 +58,15 @@ public final class Serializer {
         }
     }
 
+    /**
+     * Metoda za deserijalizaciju odnosno ucitavanje svih prethodno izdatih racuna sa putanje <code>\GeneralConstants.RECEIPT_PATH</code> i brojanje
+     * njihovog ukupnog broja i sume svih cjenovnih iznosa u njima.
+     * @return Dva int podatka na indeksima: <ul>
+     *     <li><code>0</code> - ukupan broj racuna</li>
+     *     <li><code>1</code> - ukupna cijena svih racuna</li>
+     * </ul>
+     * @author Nikola Markovic
+     */
     public static int[] getSalesInfo(){
         int[] res = new int[]{0, 0};
 

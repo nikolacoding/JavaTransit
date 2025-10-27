@@ -2,6 +2,11 @@ package util.constants;
 
 import java.awt.*;
 
+/**
+ * Data-holder klasa statickih apsolutnih konstanti koje se koriste u svrhe prvobitnog renderovanja UI elemenata.
+ * Sadrzi razne dimenzije i tehnicke konstante UI-ja sakrivene od prvog korisnickog utiska.
+ * @author Nikola Markovic
+ */
 public final class UIConstants {
     private UIConstants() {} // prevencija instanciranja
 

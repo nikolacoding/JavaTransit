@@ -15,11 +15,20 @@ import ui.shared.Listeners.ButtonListeners;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Klasa koja definise panel koji opisuje rezultat aktuelne, relevantne radnje na nivou citave aplikacije.
+ * @author Nikola Markovic
+ */
 public final class SearchResultPanel extends TitledPanel {
 
     private static final Color bgColor = new Color(242, 240, 100);
     private final JLabel topResultLabel = new GeneralLabel("", Color.black);
 
+    /**
+     * Konstruktor, po pozivu, generise standardan TitledPanel kojem se postavlja BorderLayout na kom se distribuisu
+     * UI elementi kojima se takodje dodaju odgovarajuci Listeneri.
+     * @author Nikola Markovic
+     */
     public SearchResultPanel(){
         super(TextConstants.RESULT_GENERAL_LABEL_TEXT, bgColor, Color.black);
 
@@ -52,13 +61,18 @@ public final class SearchResultPanel extends TitledPanel {
         smInstance.addPrimaryInteractiveComponent(extraButton);
     }
 
+    /**
+     * Metoda koja postavlja rezultantnu tekstualnu vrijednost na glavni JLabel panela,
+     * sto se prikazuje korisniku poslije pritiska odgovarajuceg dugmeta.
+     * @author Nikola Markovic
+     */
     public void setResult(){
         final UIManager uimInstance = UIManager.getInstance();
         final StateManager smInstance = StateManager.getInstance();
 
-        PathObject topResult = null;
+        PathObject topResult;
         boolean buttonState;
-        String text = "";
+        String text;
 
         if (!smInstance.getCurrentYenResult().isEmpty()) {
             if (smInstance.getCurrentYenResult().size() == 1 && (int)smInstance.getCurrentYenResult().getFirst().getTotalCost() == 0){
@@ -96,6 +110,11 @@ public final class SearchResultPanel extends TitledPanel {
         uimInstance.getExtraButton().setVisible(buttonState);
     }
 
+    /**
+     * Metoda koja postavlja defaultnu tekstualnu vrijednost na glavni JLabel panel,
+     * sto se prikazuje korisniku svaki put po pokretanju aplikacije.
+     * @author Nikola Markovic
+     */
     private void setTopResultLabelToDefaultState(){
         int[] res = Serializer.getSalesInfo();
 

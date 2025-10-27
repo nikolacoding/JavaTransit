@@ -10,6 +10,12 @@ import util.constants.TextConstants;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Wrapper klasa koja prosiruje JFrame i postavlja izgled detaljnog prikaza neke putanje, sto se
+ * korisniku prikazuje ako odabere da kupi kartu ili pogleda putanju detaljnije pritiskom na odgovarajuce dugme.
+ *
+ * @author Nikola Markovic
+ */
 public final class DetailedPathWindow extends JFrame {
 
     public static DetailedPathTableScrollPane scrollPane = null;
@@ -17,6 +23,12 @@ public final class DetailedPathWindow extends JFrame {
     public static JLabel departureTimeLabel = new GeneralLabel("", Color.black);
     public static JLabel arrivalTimeLabel = new GeneralLabel("", Color.black);
 
+    /**
+     * Konstruktor, po pozivu, u potpunosti namjesta konacni stil prikaza datog prozora i dodaje Listenere koji
+     * ce da rukuju funkcionalnoscu. Prikazana tabela se definise spolja.
+     *
+     * @author Nikola Markovic
+     */
     public DetailedPathWindow(){
         super(TextConstants.DETAILED_PATHS_WINDOW_TITLE);
 

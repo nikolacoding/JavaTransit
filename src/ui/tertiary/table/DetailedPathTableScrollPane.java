@@ -1,10 +1,13 @@
 package ui.tertiary.table;
-import ui.secondary.table.PathTable;
 import util.constants.UIConstants;
 
 import javax.swing.*;
-import java.awt.*;
 
+/**
+ * Jednostavna wrapper klasa za JScrollPane koja radi konkretno sa DetailedPathTable-om i postavlja
+ * odgovarajucu defaultnu velicinu prikaza.
+ * @author Nikola Markovic
+ */
 public class DetailedPathTableScrollPane extends JScrollPane {
     public DetailedPathTableScrollPane(DetailedPathTable dpTable){
         super(dpTable);

@@ -2,8 +2,11 @@ package serialization;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Currency;
 
+/**
+ * Data-holder klasa podataka o jednom fiskalnom racunu koji se generise pri uspjesnoj kupovini karte na nekoj trazenoj relaciji.
+ * @author Nikola Markovic
+ */
 public final class Receipt {
     private String dateTimePurchased;
     private int price;
@@ -16,6 +19,16 @@ public final class Receipt {
 
     private String path;
 
+    /**
+     * @param price Cijena karte
+     * @param from Grad polaska
+     * @param to Grad destinacija
+     * @param departureTime Vrijeme polaska (String reprezentacija 24-satnog vremena)
+     * @param arrivalTime Vrijeme dolaska na destinaciju
+     * @param numVehicleChanges Broj presjedanja
+     * @param path Putanja
+     * @author Nikola Markovic
+     */
     public Receipt(int price, String from, String to, String departureTime, String arrivalTime, int numVehicleChanges, String path) {
         this.dateTimePurchased = getCurrentDateTimeString();
 
@@ -33,6 +46,11 @@ public final class Receipt {
         return "RACUN_" + this.dateTimePurchased;
     }
 
+    /**
+     * Metoda koja vraca trenutno vrijeme (vrijeme pozivanja) u citkom String formatu.
+     * @return String reprezentacija trenutnog datuma i vremena u obliku <code>yyyy_MM_dd-HH_mm_ss</code>. Na primjer: <code>2025_10_27-13_30_27</code>.
+     * @author Nikola Markovic
+     */
     private static String getCurrentDateTimeString(){
         LocalDateTime currentTime = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy_MM_dd-HH_mm_ss");
@@ -40,6 +58,11 @@ public final class Receipt {
         return currentTime.format(format);
     }
 
+    /**
+     * Metoda koja vraca vrijeme stampanja racuna u ljudski uljepsanom String formatu.
+     * @return Uljepsana String reprezentacija trenutnog datuma i vremena u obliku <code>dd.MM.yyyy u HH:mm;ss</code>. Na primjer: <code>27.10.2025. u 13:30;27</code>.
+     * @author Nikola Markovic
+     */
     public String getDateTimePretty(){
         String[] args = this.dateTimePurchased.split("-");
 

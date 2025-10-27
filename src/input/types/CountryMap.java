@@ -1,12 +1,24 @@
 package input.types;
 
+/**
+ * Data-holder klasa koja reprezentuje mapu drzave u kojoj se sprovodi simulacija. Sastoji se iz matrice sa imenima gradova.
+ * @author Nikola Markovic
+ */
 public final class CountryMap {
     private final String[][] matrix;
 
+    /**
+     * @param matrix Matrica imena gradova
+     */
     public CountryMap(String[][] matrix){
         this.matrix = matrix;
     }
 
+    /**
+     * Metoda koja efektivno "poravnava" matricu imena gradova u jednodimenzionalan niz imena gradova.
+     * @return String[] niz imena gradova
+     * @author Nikola Markovic
+     */
     public String[] getCityNames(){
         String[] res = new String[matrix.length * matrix[0].length];
 

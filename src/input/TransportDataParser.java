@@ -11,10 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Klasa statickih metoda za rad sa ulaznim podacima u obliku JSON datoteke generisane u <code>TransportDataGenerator</code>-u.
+ * @author Nikola Markovic
+ */
 public final class TransportDataParser {
     public static File jsonFile = null;
     public static Path jsonPath = null;
 
+    /**
+     * @param path Putanja ulazne JSON datoteke
+     * @return Status uspjesnosti lociranja ulazne JSON datoteke
+     * @author Nikola Markovic
+     */
     public static boolean setJsonPath(String path){
         jsonFile = new File(path);
         if (jsonFile.exists()) {
@@ -27,6 +36,17 @@ public final class TransportDataParser {
         }
     }
 
+    /**
+     * Metoda za sakupljanje String podataka u odredjenom segmentu ulazne JSON datoteke.
+     * @param type Tip podatka ciji String podaci se ekstraktuju. Moze biti:
+     *             <ul>
+     *             <li><code>"countryMap"</code> - Stringovi koji opisuju ulaznu mapu grada</li>
+     *             <li><code>"stations"</code> - Stringovi koji opisuju ulazne stanice</li>
+     *             <li><code>"departures"</code> - Stringovi koji opisuju ulazna kretanja vozila</li>
+     *             </ul>
+     * @return Lista relevantnih Stringova za odabrani tip
+     * @author Nikola Markovic
+     */
     private static List<String> getStringsFromJsonOfType(String type){
         List<String> lines = new ArrayList<>();
 
@@ -71,18 +91,24 @@ public final class TransportDataParser {
         return lines;
     }
 
+    /**
+     * Metoda za generisanje CountryMap objekta u skladu sa ulaznim podacima nad kojima se poziva
+     * <code>getStringsFromJsonOfType("countrymap")</code>.
+     * @return CountryMap objekat
+     * @author Nikola Markovic
+     */
     public static CountryMap generateCountryMap(){
         List<String> lines = getStringsFromJsonOfType("countrymap");
 
         if (lines != null) {
             final int n = lines.size();
-            final int m = StringOperations.CountChars(lines.getFirst(), 'G');
+            final int m = StringOperations.countChars(lines.getFirst(), 'G');
 
             final String[][] res = new String[n][m];
 
             for (int i = 0; i < n; i++){
                 res[i] = new String[m];
-                final String[] citiesOnLine = StringOperations.ParseStringArray(lines.get(i));
+                final String[] citiesOnLine = StringOperations.parseStringArray(lines.get(i));
 
                 for (int j = 0; j < m; j++){
                     res[i][j] = citiesOnLine[j].replace(" ", "");
@@ -95,6 +121,12 @@ public final class TransportDataParser {
         return null;
     }
 
+    /**
+     * Metoda za generisanje ArrayList objekta Departure objekata u skladu sa ulaznim podacima nad kojima se poziva
+     * <code>getStringsFromJsonOfType("departures")</code>.
+     * @return ArrayList (iza interfejsa List) polazaka
+     * @author Nikola Markovic
+     */
     public static List<Departure> generateDepartures(){
         List<String> lines = getStringsFromJsonOfType("departures");
         List<Departure> res = new ArrayList<>();
@@ -134,6 +166,12 @@ public final class TransportDataParser {
         return null;
     }
 
+    /**
+     * Metoda za generisanje ArrayList objekta Station objekata u skladu sa ulaznim podacima nad kojima se poziva
+     * <code>getStringsFromJsonOfType("stations")</code>.
+     * @return ArrayList (iza interfejsa List) stanica
+     * @author Nikola Markovic
+     */
     public static List<Station> generateStations(){
         List<String> lines = getStringsFromJsonOfType("stations");
         List<Station> res = new ArrayList<>();

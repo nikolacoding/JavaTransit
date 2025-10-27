@@ -6,33 +6,50 @@ import pathfinding.yen.types.PathObject;
 
 import java.util.*;
 
+/**
+ * Klasa rukovatelj Jenovim algoritmom za K najkracih putanja izmedju dva zadata cvora usmjerenog grafa.
+ * Jenov algoritam koristi Dajkstrin algoritam za najkracu putanju izmedju dva cvora kao podalgoritam
+ * kojim otkriva K najkracih putanja.
+ * @author Nikola Markovic
+ */
 public class YenKShortestPaths {
     private final Map<String, List<GraphEdge>> adjacency;
     private final String source;
     private final String target;
 
+    /**
+     * @param graph Graf objekat (interfejs koji polimorfno reprezentuje npr. SingleGraph ili MultiGraph tipove)
+     * @param source ID cvora polaska
+     * @param target ID cvora destinacije
+     * @author Nikola Markovic
+     */
     public YenKShortestPaths(Graph graph, String source, String target) {
         this.adjacency = buildAdjacencyMap(graph);
         this.source = source;
         this.target = target;
     }
 
+    /**
+     * Metoda koja kreira listu susjednosti (u obliku mape) cvorova polaznog GraphStream grafa.
+     * @param graph Graf objekat
+     * @return <code>HashMap</code> objekat sa Stringovima kao kljucevima i listom <code>GraphEdge</code> objekata kao vrijednostima
+     * @author Nikola Markovic
+     */
     private Map<String, List<GraphEdge>> buildAdjacencyMap(Graph graph) {
         Map<String, List<GraphEdge>> graphMap = new HashMap<>();
 
-        graph.nodes().forEach(node -> {
-            graphMap.put(node.getId(), new ArrayList<>());
-        });
+        graph.nodes().forEach(node -> graphMap.put(node.getId(), new ArrayList<>()));
 
         graph.edges().forEach(edge -> {
             String from = edge.getSourceNode().getId();
             String to = edge.getTargetNode().getId();
 
-            double cost = 1.0;
+            double cost = 1d;
             if (edge.hasAttribute("weight")) {
-                Object w = edge.getAttribute("weight");
-                if (w instanceof Number) {
-                    cost = ((Number) w).doubleValue();
+                Object currentWeight = edge.getAttribute("weight");
+                if (currentWeight instanceof Number) {
+                    //cost = ((Number) currentWeight).doubleValue();
+                    cost = (double)currentWeight;
                 }
             }
 
@@ -43,6 +60,15 @@ public class YenKShortestPaths {
     }
 
 
+    /**
+     * Implementacija Dajkstrinog podalgoritma kao driver algoritma za Jenov. Implementacija koristi prioritetni red
+     * umjesto nizova kako bi se postigla veca efikasnost za ogromne grafove.
+     * @param start Pocetni cvor
+     * @param bannedNodes Skup ID-jeva zabranjenih (ranije navedenih kao nevalidnih) cvorova
+     * @param bannedEdges Skup ID-jeva zabranjenih (ranije navedenih kao nevalidnih) grana
+     * @return <code>PathObject</code> objekat koji reprezentuje datu optimalnu putanju
+     * @author Nikola Markovic
+     */
     private PathObject dijkstra(String start, Set<String> bannedNodes, Set<String> bannedEdges) {
         Map<String, Double> dist = new HashMap<>();
         Map<String, String> prev = new HashMap<>();
@@ -53,25 +79,25 @@ public class YenKShortestPaths {
         priorityQueue.offer(new AbstractMap.SimpleEntry<>(start, 0.0));
 
         while (!priorityQueue.isEmpty()) {
-            Map.Entry<String, Double> entry = priorityQueue.poll();
-            String u = entry.getKey();
-            double curDist = entry.getValue();
+            Map.Entry<String, Double> currEntry = priorityQueue.poll();
+            String currEntryId = currEntry.getKey();
+            double currDist = currEntry.getValue();
 
-            if (curDist > dist.get(u)) continue;
+            if (currDist > dist.get(currEntryId)) continue;
 
-            if (u.equals(target)) break;
+            if (currEntryId.equals(target)) break;
 
-            if (bannedNodes != null && bannedNodes.contains(u)) continue;
+            if (bannedNodes != null && bannedNodes.contains(currEntryId)) continue;
 
-            for (GraphEdge e : adjacency.getOrDefault(u, Collections.emptyList())) {
-                if (bannedEdges != null && bannedEdges.contains(e.getEdgeId())) continue;
-                if (bannedNodes != null && bannedNodes.contains(e.getTo())) continue;
+            for (GraphEdge ge : adjacency.getOrDefault(currEntryId, Collections.emptyList())) {
+                if (bannedEdges != null && bannedEdges.contains(ge.getEdgeId())) continue;
+                if (bannedNodes != null && bannedNodes.contains(ge.getTo())) continue;
 
-                double newDist = dist.get(u) + e.getCost();
-                if (newDist < dist.get(e.getTo())) {
-                    dist.put(e.getTo(), newDist);
-                    prev.put(e.getTo(), u);
-                    priorityQueue.offer(new AbstractMap.SimpleEntry<>(e.getTo(), newDist));
+                double newDist = dist.get(currEntryId) + ge.getCost();
+                if (newDist < dist.get(ge.getTo())) {
+                    dist.put(ge.getTo(), newDist);
+                    prev.put(ge.getTo(), currEntryId);
+                    priorityQueue.offer(new AbstractMap.SimpleEntry<>(ge.getTo(), newDist));
                 }
             }
         }
@@ -80,12 +106,19 @@ public class YenKShortestPaths {
             return null;
 
         LinkedList<String> path = new LinkedList<>();
-        for (String at = target; at != null; at = prev.get(at)) {
+        for (String at = target; at != null; at = prev.get(at))
             path.addFirst(at);
-        }
+
         return new PathObject(path, dist.get(target));
     }
 
+    /**
+     * Glavna metoda Jenovog algoritma ciji rezultat se dalje primjenjuje.
+     * @param K Broj najoptimalnijih putanji koje zelimo kao rezultat izvrsavanja algoritma
+     * @return Lista od tacno <code>K</code> <code>PathObject</code> objekata koji reprezentuju <code>K</code>
+     * najoptimalnijih putanji izmedju dva zadana cvora.
+     * @author Nikola Markovic
+     */
     public List<PathObject> yen(int K) {
         List<PathObject> kPaths = new ArrayList<>();
         PriorityQueue<PathObject> candidates = new PriorityQueue<>();
@@ -152,6 +185,16 @@ public class YenKShortestPaths {
         return kPaths;
     }
 
+    /**
+     * Metoda za brzi pronalazak tezine izmedju dva cvora.
+     * @param from ID cvora polaska
+     * @param to ID cvora dolaska
+     * @return U zavisnosti od uspjesnosti: <ul>
+     *     <li><code>[tezina]</code> - veza izmedju <code>from</code> i <code>to</code> postoji</li>
+     *     <li><code>Double.POSITIVE_INFINITY</code> - veza izmedju <code>from</code> i <code>to</code> ne postoji (sa odgovarajucim usmjerenjem)</li>
+     * </ul>
+     * @author Nikola Markovic
+     */
     private double findEdgeCost(String from, String to) {
         for (GraphEdge ge : adjacency.getOrDefault(from, Collections.emptyList())) {
             if (ge.getTo().equals(to)) {

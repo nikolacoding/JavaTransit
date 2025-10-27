@@ -4,7 +4,16 @@ import state.InputData;
 import util.DepartureUtility;
 import util.constants.GeneralConstants;
 
+/**
+ * Pomocna klasa za dodatne operacije pri rekonstrukciji putanje.
+ */
 public class ReconstructionUtility {
+    /**
+     * Metoda koja generise detaljnu tabelu svih voznji od prvog do zadnjeg cvora.
+     * @param pathString String putanje gdje je svaki cvor delimitiran sa " -> ".
+     * @return Dvodimenzionalni niz koji se dalje upotrebljuje za generisanje tabele kao njen data parametar.
+     * @author Nikola Markovic
+     */
     public static String[][] generateDetailedPathTableData(String pathString){
         String[] nodes = pathString.split(" -> ");
         String[][] res = new String[nodes.length - 1][4];
@@ -24,6 +33,12 @@ public class ReconstructionUtility {
         return res;
     }
 
+    /**
+     * Metoda za pronalazak najkraceg moguceg puta izmedju prvog i posljednjeg cvora neke putanje.
+     * @param pathString String putanje gdje je svaki cvor delimitiran sa " -> ".
+     * @return Najkrace vrijeme za prelazak date putanje
+     * @author Nikola Markovic
+     */
     public static int getMinPathTime(String pathString){
         int res = 0;
         String[] nodes = pathString.split(" -> ");
@@ -36,6 +51,13 @@ public class ReconstructionUtility {
         return res;
     }
 
+    /**
+     * Metoda za pronalazak najjeftinijeg moguceg puta izmedju prvog i posljednjeg cvora neke putanje.
+     * @param pathString String putanje gdje je svaki cvor delimitiran sa " -> ".
+     * @param invert Vratiti najskuplju umjesto najjeftinije
+     * @return Najmanja cijena za prelazak date putanje
+     * @author Nikola Markovic
+     */
     public static int getMinPathPrice(String pathString, boolean invert){
         int res = 0;
         String[] nodes = pathString.split(" -> ");
