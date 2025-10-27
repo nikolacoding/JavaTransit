@@ -18,6 +18,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
+/**
+ * Klasa koja opisuje JFrame prozor koji korisniku tablearno prikazuje 5 najoptimalnijih putanja.
+ * @author Nikola Markovic
+ */
 public final class PathsWindow extends JFrame {
     public PathsWindow(ArrayList<PathObject> paths){
         super(TextConstants.PATHS_WINDOW_TITLE);
@@ -75,6 +79,11 @@ public final class PathsWindow extends JFrame {
         smInstance.addActiveJFrame(this);
     }
 
+    /**
+     * Metoda koja rukuje zatvaranjem prozora tako sto u ranije koristenom dijelu UI-ja ponovo aktivira sve deaktivirane
+     * UI elemente, pa disposuje trenutni prozor.
+     * @author Nikola Markovic
+     */
     private void closeWindow(){
         StateManager smInstance = StateManager.getInstance();
         smInstance.getPrimaryInteractiveComponents().forEach(component -> component.setEnabled(true));

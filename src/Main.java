@@ -1,9 +1,6 @@
-import serialization.Serializer;
 import state.InputData;
 import input.TransportDataParser;
 import ui.primary.MainWindow;
-
-import java.io.Serial;
 
 public class Main {
     public static void main(String[] args) {

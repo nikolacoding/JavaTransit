@@ -21,12 +21,24 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Klasa koja sadrzi gotovo svaki koristen Listener u aplikaciji kategorizovan u unutrasnjim statickim klasama.
+ * Listeneri tipicno koriste vec definisane Singletone kao sto su UIManager, InputManager ili StateManager da
+ * mijenjaju stanje objekata i izvrsavanja bez direktne reference na date objekte.
+ *
+ * @author Nikola Markovic
+ */
 public final class Listeners {
 
     private static final InputData idInstance = InputData.getInstance();
     private static final UIManager uimInstance = UIManager.getInstance();
     private static final StateManager smInstance = StateManager.getInstance();
 
+    /**
+     * Listeneri (tipicno ActionListeneri) za JButton elemente.
+     *
+     * @author Nikola Markovic
+     */
     public static final class ButtonListeners {
         public static ActionListener findButtonListener = (ae) -> {
             final MapGraph graph = idInstance.getMapGraph();
@@ -83,6 +95,11 @@ public final class Listeners {
         };
     }
 
+    /**
+     * Listeneri (tipicno ItemListeneri) za JComboBox elemente.
+     *
+     * @author Nikola Markovic
+     */
     public static final class ComboBoxListeners {
         public static ItemListener optimizationCriteriaComboBoxListener = (ie) -> {
             final MapGraph graph = idInstance.getMapGraph();

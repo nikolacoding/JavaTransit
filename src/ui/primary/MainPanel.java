@@ -19,11 +19,19 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Glavni panel za prikaz vizuelizacije grafa koristeci elemente GraphStream biblioteke.
+ * @author Nikola Markovic
+ */
 public final class MainPanel extends JPanel {
     private final MapGraph graph;
     private final Map<String, Node> nodeMap;
     private final Map<String, Edge> edgeMap;
 
+    /**
+     * Konstruktor, po pozivu, generise JLabel iznad glavnog panela kao i prvobitni prikaz grafa na sredini.
+     * @author Nikola Markovic
+     */
     public MainPanel(){
         super(new BorderLayout());
 

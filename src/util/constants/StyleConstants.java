@@ -2,6 +2,10 @@ package util.constants;
 
 import java.awt.*;
 
+/**
+ * Data-holder klasa statickih apsolutnih konstanti koje se koriste za stilizovanje UI elemenata koji podrzavaju CSS-styling.
+ * @author Nikola Markovic
+ */
 public final class StyleConstants {
     private StyleConstants() {} // prevencija instanciranja
 

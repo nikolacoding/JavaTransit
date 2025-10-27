@@ -7,6 +7,12 @@ import ui.primary.SearchResultPanel;
 
 import javax.swing.*;
 
+/**
+ * Data-holder Singleton klasa koja cuva podatke o relevantnim aktivnim UI elementima aplikacije. Singleton sablon omogucava pristup
+ * ovim elementima iz bilo kog dijela koda u bilo kom dijelu izvrsavanja uz garanciju da se oni nece mijenjati, buduci da se
+ * ucitavaju samo jednom - na pocetku izvrsavanja.
+ * @author Nikola Markovic
+ */
 public final class UIManager {
     private MainPanel mainPanel;
     private OptionsPanel optionsPanel;
@@ -27,6 +33,7 @@ public final class UIManager {
     private String selectedRowPath = "";
     private String selectedRowValue = "";
 
+    // prevencija instanciranja
     private UIManager(){ }
 
     private final static UIManager globalUImanager = new UIManager();

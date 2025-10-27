@@ -7,6 +7,12 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data-holder Singleton klasa koja cuva podatke o opstem stanju izvrsavanja aplikacije. Singleton sablon omogucava pristup
+ * ovim podacima iz bilo kog dijela koda u bilo kom dijelu izvrsavanja uz garanciju da se oni nece mijenjati, buduci da se
+ * ucitavaju samo jednom - na pocetku izvrsavanja.
+ * @author Nikola Markovic
+ */
 public final class StateManager {
     private final List<JComponent> primaryInteractiveComponents = new ArrayList<>();
     private String criteriaTableName = TextConstants.CRITERIA_PRICE_DISPLAY_NAME;
@@ -23,6 +29,7 @@ public final class StateManager {
 
     private String currentReceiptPath;
 
+    // prevencija instanciranja
     private StateManager(){ }
 
     private final static StateManager globalStateManager = new StateManager();

@@ -1,5 +1,10 @@
 package util.constants;
 
+/**
+ * Data-holder klasa statickih apsolutnih konstanti koje se koriste u svrhe renderovanja UI elemenata sa tekstualnim sadrzajem kao
+ * i opste provjere stanja nekih UI objekata u odredjenim trenucima izvrsavanja.
+ * @author Nikola Markovic
+ */
 public final class TextConstants {
     private TextConstants() {} // prevencija instanciranja
 

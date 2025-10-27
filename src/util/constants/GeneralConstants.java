@@ -1,5 +1,9 @@
 package util.constants;
 
+/**
+ * Data-holder klasa statickih apsolutnih konstanti koje se koriste u opste svrhe.
+ * @author Nikola Markovic
+ */
 public final class GeneralConstants {
     private GeneralConstants() {} // prevencija instanciranja
 
