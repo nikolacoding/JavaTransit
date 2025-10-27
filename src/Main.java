@@ -7,7 +7,7 @@ import java.io.Serial;
 
 public class Main {
     public static void main(String[] args) {
-        if (TransportDataParser.setJsonPath("transport_dataMP.json")) {
+        if (TransportDataParser.setJsonPath("transport_data.json")) {
             InputData.setInputData(TransportDataParser.generateCountryMap(), TransportDataParser.generateStations(), TransportDataParser.generateDepartures());
             new MainWindow();
         }

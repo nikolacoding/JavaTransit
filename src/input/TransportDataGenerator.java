@@ -153,6 +153,7 @@ public final class TransportDataGenerator {
     // cuvanje podataka u JSON mapu
     private void saveToJson(TransportData data, String filename) {
         try (FileWriter file = new FileWriter(filename)) {
+            json.append("  ],\n");
             StringBuilder json = new StringBuilder();
             json.append("{\n");
 
@@ -181,7 +182,6 @@ public final class TransportDataGenerator {
                 if (i < data.stations.size() - 1) json.append(",");
                 json.append("\n");
             }
-            json.append("  ],\n");
 
             // vremena polazaka
             json.append("  \"departures\": [\n");
