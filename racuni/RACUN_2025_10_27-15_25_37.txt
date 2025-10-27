@@ -1,0 +1,8 @@
+Vrijeme:	27.10.2025. u 15:25;37
+Cijena:		4099
+
+Relacija:	G_0_3 do G_3_4
+Polazak:	06:30
+Dolazak:	10:09
+Presjedanja:	5
+Putanja:	Z_0_3 -> Z_0_4 -> A_1_4 -> A_1_5 -> Z_2_5 -> A_2_4  -> G_3_4
