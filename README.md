@@ -18,3 +18,5 @@ By selecting one, you'll be prompted to choose to buy a ticket with the "Kupi ka
 
 By pressing the "Potvrdi kupovinu" (confirm purchase) button, a receipt will be printed and saved to your PC in a new directory created in the exact same directory the app jar was run from.
 <img width="844" height="228" alt="image" src="https://github.com/user-attachments/assets/1d562981-6ff4-49fa-9a7c-3c7fc266e6d7" />
+
+### - Nikola Marković, ETF (October 2025)
